@@ -28,13 +28,15 @@ namespace Com.BowenIvanov.BoatCombat
         // Update is called once per frame
         void Update()
         {
-            if (!isSpawned)
+            if (PhotonNetwork.isMasterClient && !isSpawned)
             {
-                players = GameObject.FindObjectsOfType<PlayerManager>();
-                if (players.GetLength(0) == 2)
-                {
-                    setSpawnPositions(); //Warning!!!: This Sets the position on all clients. this object should only be running on one but I'm not sure how to do that yet
-                }
+                PlayerManager.LocalPlayerInstance.transform.position = new Vector3(10, 1, 10);
+                isSpawned = true;
+            }
+            else if (!isSpawned)
+            {
+                PlayerManager.LocalPlayerInstance.transform.position = new Vector3(-10, 1, -10);
+                isSpawned = true;
             }
         }
 

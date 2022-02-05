@@ -41,6 +41,8 @@ namespace Com.BowenIvanov.BoatCombat
             }
         }
 
+        
+
         #endregion
 
         #region Public Methods
