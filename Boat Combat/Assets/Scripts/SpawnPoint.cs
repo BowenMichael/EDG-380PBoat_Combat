@@ -13,7 +13,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         private void OnDestroy()
         {
-            PlayerSpawnManager.RemoveSpawnPoint(transform);
+            //PlayerSpawnManager.RemoveSpawnPoint(transform);
         }
 
         private void OnDrawGizmos()

@@ -13,7 +13,7 @@ namespace Com.BowenIvanov.BoatCombat
         public GameObject playerPrefab;
 
         [Tooltip("list of spawn points"), SerializeField]
-        private static List<Transform> spawnPoints = new List<Transform>();
+        public List<Transform> spawnPoints = new List<Transform>();
 
         public static PlayerSpawnManager self;
 
@@ -21,12 +21,12 @@ namespace Com.BowenIvanov.BoatCombat
 
         public static void AddSpawnPoint(Transform transform)
         {
-            spawnPoints.Add(transform);
+            //spawnPoints.Add(transform);
 
-            spawnPoints = spawnPoints.OrderBy(x => x.GetSiblingIndex()).ToList();
+            //spawnPoints = spawnPoints.OrderBy(x => x.GetSiblingIndex()).ToList();
         }
 
-        public static void RemoveSpawnPoint(Transform transform) => spawnPoints.Remove(transform);
+        //public static void RemoveSpawnPoint(Transform transform) => spawnPoints.Remove(transform);
 
         private void Start()
         {

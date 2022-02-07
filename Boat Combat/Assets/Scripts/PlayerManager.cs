@@ -146,8 +146,15 @@ namespace Com.BowenIvanov.BoatCombat
         {
             Debug.Log("Setting spawn " + photonView.owner);
             Transform newTransform = PlayerSpawnManager.self.getSpawnPoint();
-            transform.position = newTransform.position; 
-            transform.rotation = newTransform.rotation; 
+            photonView.RPC("sendSpawnPoint", PhotonTargets.All, new float[] { newTransform.position.x, newTransform.position.y, newTransform.position.z}, 
+                                                                new float[] { newTransform.rotation.eulerAngles.x, newTransform.rotation.eulerAngles.y, newTransform.rotation.eulerAngles.z });
+        }
+
+        [PunRPC]
+        void sendSpawnPoint(float[] pos, float[] rot)
+        {
+            transform.position = new Vector3(pos[0], pos[1], pos[2]);
+            transform.rotation = Quaternion.Euler(new Vector3(rot[0], rot[1], rot[2]));
         }
 
         #endregion
