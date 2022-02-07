@@ -9,29 +9,54 @@ namespace Com.BowenIvanov.BoatCombat
 {
     public class PlayerSpawnManager : PunBehaviour
     {
+        #region Public Variables
+
         [Tooltip("The prefab to use for representing the player")]
         public GameObject playerPrefab;
 
-        [Tooltip("list of spawn points"), SerializeField]
-        public List<Transform> spawnPoints = new List<Transform>();
+        public int maxTeams;
+
+        #endregion
+
+        #region Static Variables
+
+        [Tooltip("list of spawn points")]
+        private static List<Transform> spawnPoints = new List<Transform>();
 
         public static PlayerSpawnManager self;
 
-        int spawnIndex;
+        #endregion
+
+        #region Private Variables
+
+        int spawnIndex = 0;
+        int teamIndex = 0;
+
+        #endregion
+
+        #region Static Functions
 
         public static void AddSpawnPoint(Transform transform)
         {
-            //spawnPoints.Add(transform);
+            spawnPoints.Add(transform);
 
-            //spawnPoints = spawnPoints.OrderBy(x => x.GetSiblingIndex()).ToList();
+            spawnPoints = spawnPoints.OrderBy(x => x.GetSiblingIndex()).ToList();
         }
 
-        //public static void RemoveSpawnPoint(Transform transform) => spawnPoints.Remove(transform);
+        public static void RemoveSpawnPoint(Transform transform) => spawnPoints.Remove(transform);
+
+        #endregion
+
+        #region MonoBehavior Callbacks
 
         private void Start()
         {
             self = this;
         }
+
+        #endregion
+
+        #region Public Functions
 
         /// <summary>
         /// Instantiates local player
@@ -85,6 +110,28 @@ namespace Com.BowenIvanov.BoatCombat
             Debug.Log(string.Format("Found Spawn point at index {0}", spawnIndex));
             return spawnPoints[spawnIndex];
         }
-        
+
+        public int getTeam()
+        {
+            teamIndex++;
+            if (maxTeams > 0)
+            {
+                if (spawnIndex >= maxTeams)
+                {
+                    teamIndex = 0;
+                }
+            }
+            else
+            {
+                Debug.LogError("Player Spawn Error: No Spawn Points found");
+                return -1;
+            }
+
+            Debug.Log(string.Format("Assigned team: {0}", teamIndex));
+            return teamIndex;
+        }
+
+        #endregion
+
     }
 }

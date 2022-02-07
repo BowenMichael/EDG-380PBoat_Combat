@@ -47,4 +47,6 @@ MonoBehaviour:
   - setPosition
   - setSpawnPoint
   - sendSpawnPoint
+  - init
+  - sendTeam
   DisableAutoOpenWizard: 1
