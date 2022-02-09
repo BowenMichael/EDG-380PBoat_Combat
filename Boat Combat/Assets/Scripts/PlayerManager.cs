@@ -15,6 +15,8 @@ namespace Com.BowenIvanov.BoatCombat
         [Tooltip("Each player needs to handle their own camera")]
         public GameObject cameraPrefab;
 
+
+        public GameObject testProjectile;
         #endregion
 
         #region Private Variables
@@ -26,9 +28,12 @@ namespace Com.BowenIvanov.BoatCombat
 
         [SerializeField] private float speed;
         [SerializeField] private float rotSpeed;
+        [SerializeField] private float sensitivity;
 
         private float horizontal;
         private float vertical;
+
+        private float rotHorizontal;
 
         #endregion
 
@@ -76,6 +81,7 @@ namespace Com.BowenIvanov.BoatCombat
             if (photonView.isMine)
             {
                 ProcessMovement();
+                ProcessCameraMovement();
             }
         }
 
@@ -90,6 +96,16 @@ namespace Com.BowenIvanov.BoatCombat
         {
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
+
+            rotHorizontal = -Input.GetAxisRaw("Mouse X");
+
+            //fire projectile
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                fireProjectile();
+            }
+
+            
         }
 
         /// <summary>
@@ -101,7 +117,27 @@ namespace Com.BowenIvanov.BoatCombat
             rb.AddForce(transform.localToWorldMatrix * (direction * speed * Time.fixedDeltaTime));
 
             Vector3 rotation = new Vector3(0.0f, horizontal, 0.0f);
-            rb.AddTorque(rotation * rotSpeed * Time.fixedDeltaTime);
+            gameObject.transform.Rotate(rotSpeed * rotation * Time.fixedDeltaTime);
+        }
+
+        void ProcessCameraMovement()
+        {
+            Vector3 rotation = new Vector3(0f, rotHorizontal, 0f);
+            cvCam.transform.RotateAround(gameObject.transform.position, -Vector3.up, sensitivity * rotHorizontal);
+        }
+
+        void fireProjectile()
+        {
+            Vector3 boatPosition = gameObject.transform.position;
+            Quaternion boatRotation = gameObject.transform.rotation;
+            GameObject proj = GameObject.Instantiate(testProjectile);
+            
+            proj.transform.position = new Vector3(boatPosition.x, boatPosition.y + 1f, boatPosition.z);
+            //proj.transform.rotation = new Quaternion(boatRotation.x, boatRotation.y, boatRotation.z + 100f, boatRotation.w);
+            //proj.transform.rotation.Set += 90f;
+            proj.transform.rotation = boatRotation;
+            Vector3 front = gameObject.transform.right;
+            proj.gameObject.GetComponent<Rigidbody>().AddForce(front * 100000 * Time.fixedDeltaTime);
         }
 
         #endregion
