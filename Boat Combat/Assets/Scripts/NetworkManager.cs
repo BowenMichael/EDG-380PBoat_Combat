@@ -15,8 +15,6 @@ namespace Com.BowenIvanov.BoatCombat
 
         #region Poton Callbacks
 
-
-
         public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
         {
             Debug.LogFormat("OnPLayerEnteredRoom() {0}", newPlayer.NickName);

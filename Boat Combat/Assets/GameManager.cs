@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using TMPro;
+
 
 
 namespace Com.BowenIvanov.BoatCombat
@@ -9,28 +11,68 @@ namespace Com.BowenIvanov.BoatCombat
 
     public class GameManager : MonoBehaviour
     {
+
+
         #region Private Variables
 
-        private PlayerManager[] players;
+        [SerializeField] TMP_Text StartText;
 
-        bool isSpawned = false;
+        [SerializeField] int secondsForStartSequence;
+        [SerializeField] float matchTime;
+
+        float startTime;
+        float gameStartTime;
+        float gameEndTime;
 
         #endregion
 
+        public static GameManager self;
+
         #region Monobehavior Callbacks
 
-        
+        private void Awake()
+        {
+            self = this;
+            Time.timeScale = 0;
+        }
+
+        private void Update()
+        {
+            
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void StartCountDown()
+        {
+            StartCoroutine(startSequence());
+            //startTime = Time.time;
+            //gameStartTime = Time.time + secondsForStartSequence;
+
+
+
+        }
 
         #endregion
 
         #region Custom
 
-        void setSpawnPositions()
+        IEnumerator startSequence()
         {
-            isSpawned = true;
-            players[0].transform.position = new Vector3(10, 1, 10);
-            players[1].transform.position = new Vector3(-10, 1, -10);
+            for(int i = secondsForStartSequence; i > 0; i--)
+            {
+                StartText.text = string.Format("Game Starts in \n {0}", i);
+                yield return new WaitForSecondsRealtime(1);
+            }
+            StartText.text = "GO!";
+            Time.timeScale = 1;
+            StartText.CrossFadeAlpha(0, 1, false);
+
         }
+
+
 
         #endregion
     }

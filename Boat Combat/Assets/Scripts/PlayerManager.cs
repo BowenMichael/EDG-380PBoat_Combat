@@ -34,6 +34,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         private float horizontal;
         private float vertical;
+        private int team;
 
         private float rotHorizontal;
 
@@ -44,22 +45,6 @@ namespace Com.BowenIvanov.BoatCombat
         public override void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             info.sender.TagObject = this.gameObject;
-        }
-
-        #endregion
-
-        #region RPC
-
-        [PunRPC]
-        void ChatMessage(string name, string message)
-        {
-            Debug.Log(string.Format("ChatMessage: {0} {1}", name, message));
-        }
-
-        [PunRPC]
-        void setPosition(float[] pos)
-        {
-            transform.position = new Vector3(pos[0], pos[1], pos[2]);
         }
 
         #endregion
@@ -81,6 +66,11 @@ namespace Com.BowenIvanov.BoatCombat
 
         private void Start()
         {
+            if (PhotonNetwork.isMasterClient)
+            {
+                init();
+            }
+
             //set up Camera
             if (photonView.isMine)
             {
@@ -91,8 +81,6 @@ namespace Com.BowenIvanov.BoatCombat
                 }
                 cvCam.Follow = transform;
                 rb = GetComponent<Rigidbody>();
-
-                photonView.RPC("setSpawnPoint", PhotonTargets.MasterClient);
             }
 
         }
@@ -173,16 +161,52 @@ namespace Com.BowenIvanov.BoatCombat
             proj.gameObject.GetComponent<Rigidbody>().AddForce(front * 100000 * Time.fixedDeltaTime);
         }
 
-        /// <summary>
-        /// RPC Function that sets the spawn position. Only to run on the master client
-        /// </summary>
-        [PunRPC]
         void setSpawnPoint()
         {
             Debug.Log("Setting spawn " + photonView.owner);
             Transform newTransform = PlayerSpawnManager.self.getSpawnPoint();
-            photonView.RPC("sendSpawnPoint", PhotonTargets.All, new float[] { newTransform.position.x, newTransform.position.y, newTransform.position.z}, 
+            photonView.RPC("sendSpawnPoint", PhotonTargets.All, new float[] { newTransform.position.x, newTransform.position.y, newTransform.position.z },
                                                                 new float[] { newTransform.rotation.eulerAngles.x, newTransform.rotation.eulerAngles.y, newTransform.rotation.eulerAngles.z });
+        }
+
+        void setTeamByPlayerManager()
+        {
+            team = PlayerSpawnManager.self.getTeam();
+            photonView.RPC("sendTeam", PhotonTargets.AllBuffered, team);
+        }
+
+
+
+        #endregion
+
+        #region Custom RPC
+
+        /// <summary>
+        /// RPC Function that runs init for players. Only to run on the master client
+        /// </summary>
+        [PunRPC]
+        void init()
+        {
+            //Set Team
+            setTeamByPlayerManager();
+
+            //SetSpawnPoint
+            setSpawnPoint();
+
+            GameManager.self.StartCountDown();
+        }
+
+
+        [PunRPC]
+        void ChatMessage(string name, string message)
+        {
+            Debug.Log(string.Format("ChatMessage: {0} {1}", name, message));
+        }
+
+        [PunRPC]
+        void setPosition(float[] pos)
+        {
+            transform.position = new Vector3(pos[0], pos[1], pos[2]);
         }
 
         [PunRPC]
@@ -190,6 +214,12 @@ namespace Com.BowenIvanov.BoatCombat
         {
             transform.position = new Vector3(pos[0], pos[1], pos[2]);
             transform.rotation = Quaternion.Euler(new Vector3(rot[0], rot[1], rot[2]));
+        }
+
+        [PunRPC]
+        void sendTeam(int t)
+        {
+            team = t;
         }
 
         #endregion
