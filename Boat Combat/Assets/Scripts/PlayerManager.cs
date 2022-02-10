@@ -31,10 +31,12 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] private float speed;
         [SerializeField] private float rotSpeed;
         [SerializeField] private float sensitivity;
+        [SerializeField] private int team;
 
         private float horizontal;
         private float vertical;
-        private int team;
+        private int playerLookAtIndex = 0; //The index of the player being looked at by the local client
+
 
         private float rotHorizontal;
 
@@ -68,7 +70,7 @@ namespace Com.BowenIvanov.BoatCombat
         {
             if (PhotonNetwork.isMasterClient)
             {
-                init();
+                photonView.RPC("init", PhotonTargets.AllBuffered);
             }
 
             //set up Camera
@@ -81,6 +83,7 @@ namespace Com.BowenIvanov.BoatCombat
                 }
                 cvCam.Follow = transform;
                 rb = GetComponent<Rigidbody>();
+                toggleCameraLookAt();
             }
 
         }
@@ -101,6 +104,12 @@ namespace Com.BowenIvanov.BoatCombat
                 ProcessCameraMovement();
             }
         }
+
+        #endregion
+
+        #region Public Methods
+
+        public int getTeam() { return team; }
 
         #endregion
 
@@ -145,6 +154,44 @@ namespace Com.BowenIvanov.BoatCombat
         {
             Vector3 rotation = new Vector3(0f, rotHorizontal, 0f);
             cvCam.transform.RotateAround(gameObject.transform.position, -Vector3.up, sensitivity * rotHorizontal);
+        }
+
+        void toggleCameraLookAt()
+        {
+            PlayerManager[] players = GameManager.self.getPlayers();
+            if (cvCam.LookAt == null) //init look at
+            {
+                for (int i = 0; i < players.Length; i++)
+                {
+                    if (players[i] != this)
+                    {
+                        cvCam.LookAt = players[i].gameObject.transform;
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                if (players.Length > 2) 
+                {
+                    int j = playerLookAtIndex;
+                    while (cvCam.LookAt == players[playerLookAtIndex].gameObject.transform && players[playerLookAtIndex] == this)
+                    {
+                        playerLookAtIndex++;
+                        if(playerLookAtIndex >= players.Length)
+                        {
+                            playerLookAtIndex = 0;
+                        }
+                        if(playerLookAtIndex == j)
+                        {
+                            Debug.LogError("Camera Could not find a new Look at Target");
+                            return;
+                        }
+
+                    }
+                    cvCam.LookAt = players[playerLookAtIndex].gameObject.transform;
+                }
+            }
         }
 
         void fireProjectile()

@@ -19,10 +19,13 @@ namespace Com.BowenIvanov.BoatCombat
 
         [SerializeField] int secondsForStartSequence;
         [SerializeField] float matchTime;
+        [SerializeField] bool skipStart;
 
         float startTime;
         float gameStartTime;
         float gameEndTime;
+
+        [SerializeField] PlayerManager[] plrs;
 
         #endregion
 
@@ -34,6 +37,16 @@ namespace Com.BowenIvanov.BoatCombat
         {
             self = this;
             Time.timeScale = 0;
+
+           
+        }
+
+        private void Start()
+        {
+            if (PhotonNetwork.offlineMode)
+            {
+                skipStart = true;
+            }
         }
 
         private void Update()
@@ -45,14 +58,33 @@ namespace Com.BowenIvanov.BoatCombat
 
         #region Public Methods
 
+        public void WinState()
+        {
+            
+        }
+
         public void StartCountDown()
         {
-            StartCoroutine(startSequence());
+            plrs = FindObjectsOfType<PlayerManager>();
+            if (!skipStart) 
+            { 
+                StartCoroutine(startSequence());
+            }
+            else
+            {
+                StartText.CrossFadeAlpha(0, 1, false);
+                Time.timeScale = 1;
+            }
             //startTime = Time.time;
             //gameStartTime = Time.time + secondsForStartSequence;
 
 
 
+        }
+
+        public PlayerManager[] getPlayers()
+        {
+            return plrs;
         }
 
         #endregion
@@ -71,8 +103,6 @@ namespace Com.BowenIvanov.BoatCombat
             StartText.CrossFadeAlpha(0, 1, false);
 
         }
-
-
 
         #endregion
     }
