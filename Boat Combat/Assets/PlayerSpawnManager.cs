@@ -113,18 +113,19 @@ namespace Com.BowenIvanov.BoatCombat
 
         public int getTeam()
         {
-            teamIndex++;
-            if (maxTeams > 0)
+            if(teamIndex == -1)
             {
-                if (spawnIndex >= maxTeams)
-                {
-                    teamIndex = 0;
-                }
+                teamIndex = 1;
+            }
+            else if(teamIndex == 1)
+            {
+                teamIndex = -1;
             }
             else
             {
-                Debug.LogError("Player Spawn Error: No Spawn Points found");
-                return -1;
+                teamIndex = -1;
+                //Debug.LogError("Player Spawn Error: No Spawn Points found");
+                //return -1;
             }
 
             Debug.Log(string.Format("Assigned team: {0}", teamIndex));

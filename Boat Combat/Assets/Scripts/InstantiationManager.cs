@@ -13,17 +13,18 @@ namespace Com.BowenIvanov.BoatCombat
 
         [Tooltip("For testing objects outside a network enviorment")]
         public bool offlineMode;
-
-        // Start is called before the first frame update
-        void Start()
+        private void Awake()
         {
             if (offlineMode)
             {
                 PhotonNetwork.offlineMode = true;
                 PhotonNetwork.JoinRandomRoom();
             }
+        }
 
-            
+        // Start is called before the first frame update
+        void Start()
+        {
             GetComponent<PlayerSpawnManager>().instantiatePlayer();
         }
 
