@@ -38,12 +38,12 @@ namespace Com.BowenIvanov.BoatCombat
             if (teamControlling == otherTeam)
             {
                 healthBar.fillRect.GetComponent<Image>().color = enemyTeam.Evaluate(evaluationInput);
-                Debug.Log("other");
+                //Debug.Log("other");
             }
             else if (teamControlling == localTeam)
             {
                 healthBar.fillRect.GetComponent<Image>().color = myTeam.Evaluate(evaluationInput);
-                Debug.Log("local");
+                //Debug.Log("local");
             }
         }
     }
