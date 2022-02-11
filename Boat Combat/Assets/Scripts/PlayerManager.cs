@@ -89,6 +89,7 @@ namespace Com.BowenIvanov.BoatCombat
                     cvCam = tmp.GetComponent<CinemachineVirtualCamera>();
                 }
                 cvCam.Follow = transform;
+                cvCam.LookAt = transform;
                 rb = GetComponent<Rigidbody>();
                 toggleCameraLookAt();
             }
