@@ -58,6 +58,7 @@
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\PingCloudRegions.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\ManualPhotonViewAllocator.cs" />
     <Compile Include="Assets\Scripts\SceneNavigator.cs" />
+    <Compile Include="Assets\testProjectileScript.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs" />
     <Compile Include="Assets\PhotonChatApi\ChatClient.cs" />
     <Compile Include="Assets\Scripts\PlayerManager.cs" />
@@ -131,8 +132,12 @@
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\PunTurnManager.cs" />
     <Compile Include="Assets\Scripts\Launcher.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\OnStartDelete.cs" />
+<<<<<<< HEAD
     <Compile Include="Assets\Scripts\SpawnPoint.cs" />
     <Compile Include="Assets\PlayerSpawnManager.cs" />
+=======
+    <Compile Include="Assets\HealthBarScript.cs" />
+>>>>>>> mitko
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
