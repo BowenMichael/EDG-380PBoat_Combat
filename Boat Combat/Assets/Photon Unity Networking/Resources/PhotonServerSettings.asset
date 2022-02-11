@@ -49,4 +49,5 @@ MonoBehaviour:
   - sendSpawnPoint
   - init
   - sendTeam
+  - onDeath
   DisableAutoOpenWizard: 1

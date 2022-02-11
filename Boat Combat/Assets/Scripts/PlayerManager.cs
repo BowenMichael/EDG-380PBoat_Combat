@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Com.BowenIvanov.BoatCombat
 {
-    public class PlayerManager : PunBehaviour//, IPunObservable//(for sending specific data)
+    public class PlayerManager : PunBehaviour, IPunObservable//(for sending specific data)
     {
         #region Public Variables
 
@@ -43,9 +43,25 @@ namespace Com.BowenIvanov.BoatCombat
 
         private float rotHorizontal;
 
-        [SerializeField]private Image healthBar;
-        private float maxHealth = 100f;
+        [SerializeField] private Image healthBar;
+        [SerializeField] private float maxHealth = 100f;
         private float currentHealth;
+
+        #endregion
+
+        #region Photon Callbacks
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.isWriting)
+            {
+                stream.SendNext(currentHealth);
+            }
+            else
+            {
+                currentHealth = (float)stream.ReceiveNext();
+            }
+        }
 
         #endregion
 
@@ -104,7 +120,10 @@ namespace Com.BowenIvanov.BoatCombat
             if (photonView.isMine)
             {
                 ProcessInput();
+                checkHealth();
             }
+
+            
         }
 
         private void FixedUpdate()
@@ -117,6 +136,14 @@ namespace Com.BowenIvanov.BoatCombat
             //need to make this part of the photon view eventually
             //this updates the visual healthbar
             healthBar.fillAmount = currentHealth / maxHealth;
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.other.gameObject.tag == "Projectile")
+            {
+                currentHealth -= 25;
+            }
         }
 
         #endregion
@@ -226,12 +253,10 @@ namespace Com.BowenIvanov.BoatCombat
             proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * projSpeed * Time.fixedDeltaTime);
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void ProcessDeath()
         {
-            if(collision.other.gameObject.tag == "Projectile")
-            {
-                currentHealth -= 25;
-            }
+            setSpawnPoint();
+            currentHealth = maxHealth;
         }
 
         void setSpawnPoint()
@@ -248,7 +273,13 @@ namespace Com.BowenIvanov.BoatCombat
             photonView.RPC("sendTeam", PhotonTargets.AllBuffered, team);
         }
 
-
+        void checkHealth()
+        {
+            if (currentHealth <= 0)
+            {
+                photonView.RPC("onDeath", PhotonTargets.All);
+            }
+        }
 
         #endregion
 
@@ -293,6 +324,12 @@ namespace Com.BowenIvanov.BoatCombat
         void sendTeam(int t)
         {
             team = t;
+        }
+
+        [PunRPC]
+        void onDeath()
+        {
+            ProcessDeath();
         }
 
         #endregion

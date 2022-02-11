@@ -13,7 +13,6 @@ namespace Com.BowenIvanov.BoatCombat
 
         #endregion
 
-
         #region Private Variables
 
         private Rigidbody rb;
@@ -42,7 +41,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         private void OnCollisionEnter(Collision collision)
         {
-            Object.Destroy(gameObject);
+            //Object.Destroy(gameObject);
             PhotonNetwork.Destroy(gameObject);
         }
 

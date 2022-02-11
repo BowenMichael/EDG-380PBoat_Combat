@@ -120,8 +120,9 @@ MonoBehaviour:
   rotSpeed: 50
   sensitivity: 0
   team: 0
-  projSpeed: 0
+  projSpeed: 50000
   healthBar: {fileID: 7365100378880753361}
+  maxHealth: 100
 --- !u!114 &5008256347506235867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,6 +146,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 9010179718641067023}
   - {fileID: 2456413125340564201}
+  - {fileID: 1117244123021370588}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
