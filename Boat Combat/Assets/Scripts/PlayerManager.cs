@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Com.BowenIvanov.BoatCombat
 {
-    public class PlayerManager : Photon.MonoBehaviour//, IPunObservable//(for sending specific data)
+    public class PlayerManager : PunBehaviour//, IPunObservable//(for sending specific data)
     {
         #region Public Variables
 
