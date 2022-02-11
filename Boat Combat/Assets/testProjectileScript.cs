@@ -24,15 +24,10 @@ namespace Com.BowenIvanov.BoatCombat
         // Start is called before the first frame update
         void Awake()
         {
-            // #Important
-            // used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
             //if (photonView.isMine)
             //{
-            //    testProjectileScript.LocalPlayerInstance = this.gameObject;
+            //    PhotonNetwork.Instantiate("testProjectile", new Vector3(0, 0, 0), Quaternion.identity, 0);
             //}
-            // #Critical
-            // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
-            //DontDestroyOnLoad(this.gameObject);
 
             //Vector3 front = gameObject.transform.right;
             //gameObject.GetComponent<Rigidbody>().AddForce(front * 100000 * Time.fixedDeltaTime);
@@ -48,6 +43,7 @@ namespace Com.BowenIvanov.BoatCombat
         private void OnCollisionEnter(Collision collision)
         {
             Object.Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
 
         #endregion

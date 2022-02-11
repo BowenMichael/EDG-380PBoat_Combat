@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using Photon;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 namespace Com.BowenIvanov.BoatCombat
 {
@@ -32,6 +33,8 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] private float rotSpeed;
         [SerializeField] private float sensitivity;
         [SerializeField] private int team;
+        [SerializeField] private float projSpeed;
+
 
         private float horizontal;
         private float vertical;
@@ -39,6 +42,10 @@ namespace Com.BowenIvanov.BoatCombat
 
 
         private float rotHorizontal;
+
+        [SerializeField]private Image healthBar;
+        private float maxHealth = 100f;
+        private float currentHealth;
 
         #endregion
 
@@ -86,6 +93,9 @@ namespace Com.BowenIvanov.BoatCombat
                 toggleCameraLookAt();
             }
 
+            //set current health to max health
+            currentHealth = maxHealth;
+
         }
 
         private void Update()
@@ -103,6 +113,9 @@ namespace Com.BowenIvanov.BoatCombat
                 ProcessMovement();
                 ProcessCameraMovement();
             }
+            //need to make this part of the photon view eventually
+            //this updates the visual healthbar
+            healthBar.fillAmount = currentHealth / maxHealth;
         }
 
         #endregion
@@ -198,14 +211,26 @@ namespace Com.BowenIvanov.BoatCombat
         {
             Vector3 boatPosition = gameObject.transform.position;
             Quaternion boatRotation = gameObject.transform.rotation;
-            GameObject proj = GameObject.Instantiate(testProjectile);
+            //GameObject proj = GameObject.Instantiate(testProjectile);
+            //using PhotonNetwork.Instantiate the created game object is set up for the network
+            GameObject proj = PhotonNetwork.Instantiate("testProjectile", boatPosition, boatRotation, 0);
             
             proj.transform.position = new Vector3(boatPosition.x, boatPosition.y + 1f, boatPosition.z);
             //proj.transform.rotation = new Quaternion(boatRotation.x, boatRotation.y, boatRotation.z + 100f, boatRotation.w);
             //proj.transform.rotation.Set += 90f;
             proj.transform.rotation = boatRotation;
             Vector3 front = gameObject.transform.right;
-            proj.gameObject.GetComponent<Rigidbody>().AddForce(front * 100000 * Time.fixedDeltaTime);
+            Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
+            Vector3 projectileDirection = new Vector3(-cameraDirection.x, cameraDirection.y, -cameraDirection.z).normalized;
+            proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * projSpeed * Time.fixedDeltaTime);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if(collision.other.gameObject.tag == "Projectile")
+            {
+                currentHealth -= 25;
+            }
         }
 
         void setSpawnPoint()
