@@ -58,6 +58,7 @@
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\PingCloudRegions.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\ManualPhotonViewAllocator.cs" />
     <Compile Include="Assets\Scripts\SceneNavigator.cs" />
+    <Compile Include="Assets\testProjectileScript.cs" />
     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs" />
     <Compile Include="Assets\PhotonChatApi\ChatClient.cs" />
     <Compile Include="Assets\Scripts\PlayerManager.cs" />
@@ -131,7 +132,7 @@
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\PunTurnManager.cs" />
     <Compile Include="Assets\Scripts\Launcher.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\OnStartDelete.cs" />
-    <Compile Include="Assets\testProjectileScript.cs" />
+    <Compile Include="Assets\HealthBarScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Photon Unity Networking\changelog.txt" />
