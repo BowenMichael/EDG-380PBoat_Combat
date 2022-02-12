@@ -42,7 +42,8 @@ namespace Com.BowenIvanov.BoatCombat
         private void OnCollisionEnter(Collision collision)
         {
             //Object.Destroy(gameObject);
-            PhotonNetwork.Destroy(gameObject);
+            if(photonView.isRuntimeInstantiated)
+                PhotonNetwork.Destroy(gameObject);
         }
 
         #endregion

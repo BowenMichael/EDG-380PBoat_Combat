@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 9010179718641067023}
   - component: {fileID: 1455909648388660225}
   - component: {fileID: 2456413125340564201}
+  - component: {fileID: 7808871593006261825}
   m_Layer: 0
   m_Name: Player Main
   m_TagString: Untagged
@@ -114,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraPrefab: {fileID: 1553192701770496705, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
-  testProjectile: {fileID: 0}
+  testProjectile: {fileID: 6975210507314041288, guid: eeb44b604e36d564eb87ddf8b93ed9ce, type: 3}
   cvCam: {fileID: 0}
   speed: 500
   rotSpeed: 50
@@ -260,6 +261,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SynchronizeVelocity: 1
   m_SynchronizeAngularVelocity: 1
+--- !u!114 &7808871593006261825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3518620919461193308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfc8515f1d451244293eaec59688de14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeIterations: 10
+  indicator: {fileID: 6975210507314041288, guid: 0eb6330741b512c4aac457739790487f, type: 3}
+  distancePerIteration: 1.5
+  gravity: 1.5
 --- !u!1001 &7195716310260455679
 PrefabInstance:
   m_ObjectHideFlags: 0
