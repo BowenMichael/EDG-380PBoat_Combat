@@ -152,7 +152,13 @@ namespace Com.BowenIvanov.BoatCombat
 
         #region Public Methods
 
+        #region Acessors
+
         public int getTeam() { return team; }
+
+        public float getProjSpeed() { return projSpeed; }
+
+        #endregion
 
         #endregion
 
@@ -166,7 +172,7 @@ namespace Com.BowenIvanov.BoatCombat
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
 
-            rotHorizontal = -Input.GetAxisRaw("Mouse X");
+            //rotHorizontal = -Input.GetAxisRaw("Mouse X");
 
             //fire projectile
             if(Input.GetKeyDown(KeyCode.Space))
