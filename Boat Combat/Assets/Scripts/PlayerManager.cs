@@ -47,6 +47,8 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] private float maxHealth = 100f;
         private float currentHealth;
 
+        private Transform spawnPoint;
+
         #endregion
 
         #region Photon Callbacks
@@ -255,16 +257,22 @@ namespace Com.BowenIvanov.BoatCombat
 
         private void ProcessDeath()
         {
-            setSpawnPoint();
+            respawn();
             currentHealth = maxHealth;
         }
 
         void setSpawnPoint()
         {
             Debug.Log("Setting spawn " + photonView.owner);
-            Transform newTransform = PlayerSpawnManager.self.getSpawnPoint();
-            photonView.RPC("sendSpawnPoint", PhotonTargets.All, new float[] { newTransform.position.x, newTransform.position.y, newTransform.position.z },
-                                                                new float[] { newTransform.rotation.eulerAngles.x, newTransform.rotation.eulerAngles.y, newTransform.rotation.eulerAngles.z });
+            spawnPoint = PlayerSpawnManager.self.getSpawnPoint();
+            respawn();
+        }
+
+        void respawn()
+        {
+            Debug.Log("Respawning " + photonView.owner);
+            photonView.RPC("sendSpawnPoint", PhotonTargets.All, new float[] { spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z },
+                                                                new float[] { spawnPoint.rotation.eulerAngles.x, spawnPoint.rotation.eulerAngles.y, spawnPoint.rotation.eulerAngles.z });
         }
 
         void setTeamByPlayerManager()
