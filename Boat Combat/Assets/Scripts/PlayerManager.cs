@@ -175,7 +175,17 @@ namespace Com.BowenIvanov.BoatCombat
             //rotHorizontal = -Input.GetAxisRaw("Mouse X");
 
             //fire projectile
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                projSpeed = 0;
+            }
+
+            if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Mouse0))
+            {
+                projSpeed = (projSpeed + 100);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Mouse0))
             {
                 fireProjectile();
             }
@@ -202,7 +212,7 @@ namespace Com.BowenIvanov.BoatCombat
         void ProcessCameraMovement()
         {
             Vector3 rotation = new Vector3(0f, rotHorizontal, 0f);
-            cvCam.transform.RotateAround(gameObject.transform.position, -Vector3.up, sensitivity * rotHorizontal);
+            cvCam.transform.Rotate(gameObject.transform.position, sensitivity * rotHorizontal);
         }
 
         void toggleCameraLookAt()
@@ -251,14 +261,13 @@ namespace Com.BowenIvanov.BoatCombat
             //using PhotonNetwork.Instantiate the created game object is set up for the network
             GameObject proj = PhotonNetwork.Instantiate("testProjectile", boatPosition, boatRotation, 0);
             
-            proj.transform.position = new Vector3(boatPosition.x, boatPosition.y + 1f, boatPosition.z);
-            //proj.transform.rotation = new Quaternion(boatRotation.x, boatRotation.y, boatRotation.z + 100f, boatRotation.w);
-            //proj.transform.rotation.Set += 90f;
+            proj.transform.position = new Vector3(boatPosition.x, boatPosition.y + 2f, boatPosition.z);
             proj.transform.rotation = boatRotation;
+
             Vector3 front = gameObject.transform.right;
             Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
             Vector3 projectileDirection = new Vector3(-cameraDirection.x, cameraDirection.y, -cameraDirection.z).normalized;
-            proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * projSpeed * Time.fixedDeltaTime);
+            proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed) * Time.fixedDeltaTime);
         }
 
         private void ProcessDeath()
