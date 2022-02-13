@@ -42,6 +42,10 @@ namespace Com.BowenIvanov.BoatCombat
         private void OnCollisionEnter(Collision collision)
         {
             //Object.Destroy(gameObject);
+            if(collision.gameObject.TryGetComponent(out testProjectileScript test))
+            {
+                return;
+            }
             if(photonView.isRuntimeInstantiated)
                 PhotonNetwork.Destroy(gameObject);
         }

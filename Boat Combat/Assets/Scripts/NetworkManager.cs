@@ -48,6 +48,7 @@ namespace Com.BowenIvanov.BoatCombat
         public void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();
+            
         }
 
         #endregion

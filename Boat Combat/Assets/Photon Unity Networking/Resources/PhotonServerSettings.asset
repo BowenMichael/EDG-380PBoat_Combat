@@ -50,4 +50,5 @@ MonoBehaviour:
   - init
   - sendTeam
   - onDeath
+  - EndState
   DisableAutoOpenWizard: 1

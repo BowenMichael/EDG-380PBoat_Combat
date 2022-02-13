@@ -34,6 +34,10 @@ namespace Com.BowenIvanov.BoatCombat {
 
         void waterTarget()
         {
+            if(aim == null)
+            {
+                return;
+            }
             Vector3 pos = gameObject.transform.position;
             pos += new Vector3(0.0f, 1.0f, 0.0f);
             Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
