@@ -117,7 +117,7 @@ namespace Com.BowenIvanov.BoatCombat
                 toggleCameraLookAt();
                 mobileAxis = FindObjectOfType<FixedJoystick>();
                 mobileRT = mobileAxis.shootRegion;
-                mobileAxisRT = mobileAxis.GetComponentInParent<RectTransform>();
+                mobileAxisRT = mobileAxis.transform.parent.GetComponentInParent<RectTransform>();
             }
 
             //set current health to max health
@@ -198,7 +198,7 @@ namespace Com.BowenIvanov.BoatCombat
             }
             
 #else
-            horizontal = mobileAxis.Horizontal;
+            horizontal = -mobileAxis.Horizontal;
             vertical = mobileAxis.Vertical;
 
             //Camera Controls
