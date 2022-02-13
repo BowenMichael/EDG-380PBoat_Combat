@@ -37,7 +37,7 @@ namespace Com.BowenIvanov.BoatCombat
         public void lose()
         {
            
-            winUI.SetActive(true);
+            loseUI.SetActive(true);
             StartCoroutine(endState());
         }
 

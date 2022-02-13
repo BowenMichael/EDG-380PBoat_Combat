@@ -46,8 +46,9 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 return;
             }
-            if(photonView.isRuntimeInstantiated)
-                PhotonNetwork.Destroy(gameObject);
+            if(photonView.isMine)
+                if(photonView.isRuntimeInstantiated)
+                    PhotonNetwork.Destroy(gameObject);
         }
 
         #endregion

@@ -450,14 +450,7 @@ namespace Com.BowenIvanov.BoatCombat
         [PunRPC]
         void EndState(int winningTeam)
         {
-            if(winningTeam == team)
-            {
-                GameManager.self.loadScene("Win");
-            }
-            else
-            {
-                GameManager.self.loadScene("Lose");
-            }
+              GameManager.self.loadScene(winningTeam);
         }
 
 #endregion

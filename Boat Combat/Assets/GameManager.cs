@@ -70,17 +70,17 @@ namespace Com.BowenIvanov.BoatCombat
 
         public void WinState(int winningTeam)
         {
+            
             ((GameObject)PhotonNetwork.masterClient.TagObject).GetPhotonView().RPC("EndState", PhotonTargets.All, winningTeam);
         }
 
-        public void loadScene(string scene)
+        public void loadScene(int winner)
         {
-            //SceneManager.LoadScene(scene);
-            if(scene == "Win")
+            if (winner == PlayerManager.LocalPlayerInstance.GetComponent<PlayerManager>().getTeam())
             {
                 UI.win();
             }
-            else if(scene == "Lose")
+            else
             {
                 UI.lose();
             }
