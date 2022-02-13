@@ -218,8 +218,12 @@ MonoBehaviour:
   sensitivity: 2
   team: 0
   projSpeed: 0
+  numProjectiles: 5
+  projectilesSpreadAngle: 7.94
   healthBar: {fileID: 7365100378880753361}
   maxHealth: 100
+  mobileAxis: {fileID: 0}
+  mobileLookSpeed: 2.5
 --- !u!114 &5008256347506235867
 MonoBehaviour:
   m_ObjectHideFlags: 0
