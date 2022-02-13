@@ -70,7 +70,7 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 teamContesting += pm.getTeam();
             }
-            Debug.Log(string.Format("Team Contesting: {0}; Team Controlling: {1}; Health: {2}", teamContesting, teamControlling, health));
+            //Debug.Log(string.Format("Team Contesting: {0}; Team Controlling: {1}; Health: {2}", teamContesting, teamControlling, health));
 
             if (teamContesting == 0)
             {

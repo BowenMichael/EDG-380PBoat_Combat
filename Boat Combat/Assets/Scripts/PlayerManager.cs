@@ -34,6 +34,8 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] private float sensitivity;
         [SerializeField] private int team;
         [SerializeField] private float projSpeed;
+        [SerializeField] private float numProjectiles;
+        [SerializeField] private float projectilesSpreadAngle;
 
 
         private float horizontal;
@@ -48,6 +50,13 @@ namespace Com.BowenIvanov.BoatCombat
         private float currentHealth;
 
         private Transform spawnPoint;
+
+        [SerializeField] private FixedJoystick mobileAxis;
+        [SerializeField] private float mobileLookSpeed = 5f;
+        RectTransform mobileAxisRT;
+        RectTransform mobileRT;
+
+        Vector2 initalTouchPoint;
 
         #endregion
 
@@ -106,6 +115,9 @@ namespace Com.BowenIvanov.BoatCombat
                 cvCam.LookAt = transform;
                 rb = GetComponent<Rigidbody>();
                 toggleCameraLookAt();
+                mobileAxis = FindObjectOfType<FixedJoystick>();
+                mobileRT = mobileAxis.shootRegion;
+                mobileAxisRT = mobileAxis.GetComponentInParent<RectTransform>();
             }
 
             //set current health to max health
@@ -165,28 +177,81 @@ namespace Com.BowenIvanov.BoatCombat
         /// </summary>
         void ProcessInput()
         {
+#if !UNITY_ANDROID
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
-
-            //rotHorizontal = -Input.GetAxisRaw("Mouse X");
 
             //fire projectile
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))
             {
-                projSpeed = 0;
+                resetShot();
             }
 
             if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Mouse0))
             {
-                projSpeed = (projSpeed + 100);
+                chargeShot();
             }
 
             if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Mouse0))
             {
                 fireProjectile();
             }
+            
+#else
+            horizontal = mobileAxis.Horizontal;
+            vertical = mobileAxis.Vertical;
+
+            //Camera Controls
+            Touch[] ts = Input.touches;
+
+
+            for (int i = 0; i < ts.Length; i++)
+            {
+                if ((ts[i].position.x < mobileRT.position.x + mobileRT.rect.width * .5f && ts[i].position.y < mobileRT.position.y + mobileRT.rect.height * .5f))
+                {
+                    //Debug.Log("Fire area: " + ts[i].position);
+                    if (ts[i].phase == TouchPhase.Began)
+                    {
+                        resetShot();
+                    }
+                    else if (ts[i].phase == TouchPhase.Stationary || ts[i].phase == TouchPhase.Moved)
+                    {
+                        chargeShot();
+                    }
+                    else if (ts[i].phase == TouchPhase.Ended)
+                    {
+                        fireProjectile();
+                    }
+                    i = ts.Length;
+                    break;
+                }
+                else if(!(ts[i].position.x > mobileAxisRT.position.x - mobileAxisRT.rect.width * .5f && ts[i].position.y < mobileAxisRT.position.y + mobileAxisRT.rect.height * .5f))
+                {
+                    if(ts[i].phase == TouchPhase.Began)
+                    {
+                        initalTouchPoint = ts[i].position;
+                    }
+                    else if(ts[i].phase == TouchPhase.Moved)
+                    {
+                        CinemachineOrbitalTransposer transposer = cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
+                        Vector2 diff = ts[i].position - initalTouchPoint;
+                        float distance = Vector2.Dot(diff, Vector2.right);
+                        distance = Mathf.Clamp(distance, transposer.m_XAxis.m_MinValue, transposer.m_XAxis.m_MaxValue);
+                        //Debug.Log("MoveCamera: " + distance);
+                        
+                        float oldValue = transposer.m_XAxis.Value;
+                        transposer.m_XAxis.Value = oldValue + (distance / transposer.m_XAxis.m_MaxValue) * mobileLookSpeed;
+                        //Input.simulateMouseWithTouches = true;// cvCam.GetInputAxisProvider();
+                    }
+                }
+            }
+#endif
+
+            //rotHorizontal = -Input.GetAxisRaw("Mouse X");
 
             
+
+
             if (Input.GetKeyDown(KeyCode.I))
             {
                 photonView.RPC("ChatMessage", PhotonTargets.All, photonView.owner.NickName, "I Message you");
@@ -214,6 +279,17 @@ namespace Com.BowenIvanov.BoatCombat
             Vector3 rotation = new Vector3(0f, rotHorizontal, 0f);
             cvCam.transform.Rotate(gameObject.transform.position, sensitivity * rotHorizontal);
         }
+
+        void resetShot()
+        {
+            projSpeed = 10000;
+        }
+
+        void chargeShot()
+        {
+            projSpeed = (projSpeed + 100);
+        }
+
 
         void toggleCameraLookAt()
         {
@@ -259,24 +335,31 @@ namespace Com.BowenIvanov.BoatCombat
             Quaternion boatRotation = gameObject.transform.rotation;
             //GameObject proj = GameObject.Instantiate(testProjectile);
             //using PhotonNetwork.Instantiate the created game object is set up for the network
-            GameObject proj = null;
-            if (PhotonNetwork.inRoom)
+            for (int i = 0; i < numProjectiles; i++)
             {
-                proj = PhotonNetwork.Instantiate("testProjectile", boatPosition, boatRotation, 0);
-            }
-            
-            if(proj == null)
-            {
-                return;
-            }
+                float angleModifier = (i / numProjectiles) * 2f -1f;
+                //angleModifier *= projectilesSpreadAngle;
+                GameObject proj = null;
+                if (PhotonNetwork.inRoom)
+                {
+                    proj = PhotonNetwork.Instantiate("testProjectile", boatPosition, boatRotation, 0);
+                }
 
-            proj.transform.position = new Vector3(boatPosition.x, boatPosition.y + 2f, boatPosition.z);
-            proj.transform.rotation = boatRotation;
+                if (proj == null)
+                {
+                    return;
+                }
 
-            Vector3 front = gameObject.transform.right;
-            Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
-            Vector3 projectileDirection = new Vector3(-cameraDirection.x, cameraDirection.y, -cameraDirection.z).normalized;
-            proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed) * Time.fixedDeltaTime);
+                proj.transform.position = new Vector3(boatPosition.x + angleModifier * numProjectiles, boatPosition.y + 2f, boatPosition.z);
+
+                proj.transform.rotation = boatRotation;
+
+                Vector3 front = gameObject.transform.right;
+                Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
+                Vector3 projectileDirection = new Vector3(-cameraDirection.x, cameraDirection.y, -cameraDirection.z).normalized;
+                
+                proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed) * Time.fixedDeltaTime);
+            }
         }
 
         private void ProcessDeath()
@@ -313,9 +396,9 @@ namespace Com.BowenIvanov.BoatCombat
             }
         }
 
-        #endregion
+#endregion
 
-        #region Custom RPC
+#region Custom RPC
 
         /// <summary>
         /// RPC Function that runs init for players. Only to run on the master client
@@ -377,6 +460,6 @@ namespace Com.BowenIvanov.BoatCombat
             }
         }
 
-        #endregion
+#endregion
     }
 }
