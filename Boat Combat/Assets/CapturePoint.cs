@@ -82,7 +82,7 @@ namespace Com.BowenIvanov.BoatCombat
                 health++;
                 if(health == maxHealth)
                 {
-                    GameManager.self.WinState();
+                    GameManager.self.WinState(teamControlling);
                 }
             }
             else if (teamControlling != teamContesting)

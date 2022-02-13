@@ -65,10 +65,6 @@ namespace Com.BowenIvanov.BoatCombat
             }
         }
 
-        #endregion
-
-        #region Photon Callbacks
-
         public override void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             info.sender.TagObject = this.gameObject;
@@ -211,6 +207,10 @@ namespace Com.BowenIvanov.BoatCombat
 
         void ProcessCameraMovement()
         {
+            if(cvCam == null)
+            {
+                return;
+            }
             Vector3 rotation = new Vector3(0f, rotHorizontal, 0f);
             cvCam.transform.Rotate(gameObject.transform.position, sensitivity * rotHorizontal);
         }
@@ -259,8 +259,17 @@ namespace Com.BowenIvanov.BoatCombat
             Quaternion boatRotation = gameObject.transform.rotation;
             //GameObject proj = GameObject.Instantiate(testProjectile);
             //using PhotonNetwork.Instantiate the created game object is set up for the network
-            GameObject proj = PhotonNetwork.Instantiate("testProjectile", boatPosition, boatRotation, 0);
+            GameObject proj = null;
+            if (PhotonNetwork.inRoom)
+            {
+                proj = PhotonNetwork.Instantiate("testProjectile", boatPosition, boatRotation, 0);
+            }
             
+            if(proj == null)
+            {
+                return;
+            }
+
             proj.transform.position = new Vector3(boatPosition.x, boatPosition.y + 2f, boatPosition.z);
             proj.transform.rotation = boatRotation;
 
@@ -353,6 +362,19 @@ namespace Com.BowenIvanov.BoatCombat
         void onDeath()
         {
             ProcessDeath();
+        }
+
+        [PunRPC]
+        void EndState(int winningTeam)
+        {
+            if(winningTeam == team)
+            {
+                GameManager.self.loadScene("Win");
+            }
+            else
+            {
+                GameManager.self.loadScene("Lose");
+            }
         }
 
         #endregion

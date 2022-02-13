@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using TMPro;
 
@@ -25,7 +26,10 @@ namespace Com.BowenIvanov.BoatCombat
         float gameStartTime;
         float gameEndTime;
 
+        NetworkManager nm;
+
         [SerializeField] PlayerManager[] plrs;
+        [SerializeField] SettingsUI UI;
 
         #endregion
 
@@ -43,6 +47,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         private void Start()
         {
+            nm = GetComponent<NetworkManager>();
             if (PhotonNetwork.offlineMode)
             {
                 skipStart = true;
@@ -58,9 +63,27 @@ namespace Com.BowenIvanov.BoatCombat
 
         #region Public Methods
 
-        public void WinState()
+        public void leaveRoom()
         {
-            
+            nm.LeaveRoom();
+        }
+
+        public void WinState(int winningTeam)
+        {
+            ((GameObject)PhotonNetwork.masterClient.TagObject).GetPhotonView().RPC("EndState", PhotonTargets.All, winningTeam);
+        }
+
+        public void loadScene(string scene)
+        {
+            //SceneManager.LoadScene(scene);
+            if(scene == "Win")
+            {
+                UI.win();
+            }
+            else if(scene == "Lose")
+            {
+                UI.lose();
+            }
         }
 
         public void StartCountDown()
@@ -77,9 +100,6 @@ namespace Com.BowenIvanov.BoatCombat
             }
             //startTime = Time.time;
             //gameStartTime = Time.time + secondsForStartSequence;
-
-
-
         }
 
         public PlayerManager[] getPlayers()
