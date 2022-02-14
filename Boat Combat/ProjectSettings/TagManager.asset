@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Projectile
   - ShootUIRegion
+  - Canvas
   layers:
   - Default
   - TransparentFX

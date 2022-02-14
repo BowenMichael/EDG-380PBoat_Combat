@@ -45,7 +45,9 @@ namespace Com.BowenIvanov.BoatCombat
 
         private float rotHorizontal;
 
-        [SerializeField] private Image healthBar;
+        [SerializeField] private GameObject healthBarPrefab;
+        private Transform canvasTransform;
+        private Slider healthSlider;
         [SerializeField] private float maxHealth = 100f;
         private float currentHealth;
 
@@ -106,6 +108,7 @@ namespace Com.BowenIvanov.BoatCombat
             //set up Camera
             if (photonView.isMine)
             {
+                
                 if (cvCam == null)
                 {
                     GameObject tmp = Instantiate(cameraPrefab);
@@ -115,10 +118,20 @@ namespace Com.BowenIvanov.BoatCombat
                 cvCam.LookAt = transform;
                 rb = GetComponent<Rigidbody>();
                 toggleCameraLookAt();
+
+#if UNITY_ANDROID
                 mobileAxis = FindObjectOfType<FixedJoystick>();
                 mobileRT = mobileAxis.shootRegion;
                 mobileAxisRT = mobileAxis.transform.parent.GetComponentInParent<RectTransform>();
+#endif
+
+
+
             }
+
+            //Instantiate Healthbar
+            canvasTransform = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Transform>();
+            healthSlider = Instantiate(healthBarPrefab, canvasTransform).GetComponent<Slider>();
 
             //set current health to max health
             currentHealth = maxHealth;
@@ -145,7 +158,7 @@ namespace Com.BowenIvanov.BoatCombat
             }
             //need to make this part of the photon view eventually
             //this updates the visual healthbar
-            healthBar.fillAmount = currentHealth / maxHealth;
+            healthSlider.value = currentHealth / maxHealth;
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -156,21 +169,21 @@ namespace Com.BowenIvanov.BoatCombat
             }
         }
 
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
 
-        #region Acessors
+#region Acessors
 
         public int getTeam() { return team; }
 
         public float getProjSpeed() { return projSpeed; }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
-        #region Custom
+#region Custom
 
         /// <summary>
         /// runs at update and updates player input
