@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 
 namespace Com.BowenIvanov.BoatCombat
@@ -11,6 +12,7 @@ namespace Com.BowenIvanov.BoatCombat
         public GameObject settingUI;
         public GameObject winUI;
         public GameObject loseUI;
+        public TMP_Text timerText;
 
         // Start is called before the first frame update
         void Start()

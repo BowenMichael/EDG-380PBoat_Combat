@@ -63,6 +63,11 @@ namespace Com.BowenIvanov.BoatCombat
             timer -= Time.deltaTime;
         }
 
+        public int getWinning()
+        {
+            return teamControlling;
+        }
+
         void updateHealth()
         {
             teamContesting = 0;

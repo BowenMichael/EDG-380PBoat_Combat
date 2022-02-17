@@ -10,17 +10,21 @@ using TMPro;
 namespace Com.BowenIvanov.BoatCombat
 {
 
-    public class GameManager : MonoBehaviour
+    public class GameManager : Photon.MonoBehaviour
     {
 
 
         #region Private Variables
 
         [SerializeField] TMP_Text StartText;
+        [SerializeField] TMP_Text timerText;
 
         [SerializeField] int secondsForStartSequence;
+        [SerializeField] int secondsForMatch;
         [SerializeField] float matchTime;
         [SerializeField] bool skipStart;
+
+        [SerializeField] CapturePoint cp;
 
         float startTime;
         float gameStartTime;
@@ -98,6 +102,7 @@ namespace Com.BowenIvanov.BoatCombat
                 StartText.CrossFadeAlpha(0, 1, false);
                 Time.timeScale = 1;
             }
+
             //startTime = Time.time;
             //gameStartTime = Time.time + secondsForStartSequence;
         }
@@ -121,8 +126,39 @@ namespace Com.BowenIvanov.BoatCombat
             StartText.text = "GO!";
             Time.timeScale = 1;
             StartText.CrossFadeAlpha(0, 1, false);
+            if (PhotonNetwork.isMasterClient)
+            {
+                StartCoroutine(matchTimer());
+            }
 
         }
+
+        IEnumerator matchTimer()
+        {
+            for (int i = secondsForMatch; i > 0; i--)
+            {
+                photonView.RPC("sendTimer", PhotonTargets.AllViaServer, i);
+                yield return new WaitForSecondsRealtime(1);
+            }
+            photonView.RPC("endGameByMatchTime", PhotonTargets.All);
+        }
+
+        #endregion
+
+        #region RPC
+
+        [PunRPC]
+        void sendTimer(int i)
+        {
+            timerText.text = string.Format("Time Left: {0}:{1}", i / 60, i % 60);
+        }
+
+        [PunRPC]
+        void endGameByMatchTime()
+        {
+            loadScene(cp.getWinning());
+        }
+
 
         #endregion
     }
