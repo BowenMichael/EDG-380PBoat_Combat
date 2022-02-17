@@ -55,8 +55,8 @@ namespace Com.BowenIvanov.BoatCombat
 
         [SerializeField] private FixedJoystick mobileAxis;
         [SerializeField] private float mobileLookSpeed = 5f;
-        RectTransform mobileAxisRT;
-        RectTransform mobileRT;
+        [SerializeField] RectTransform mobileAxisRT;
+        [SerializeField]RectTransform mobileRT;
 
         Vector2 initalTouchPoint;
 
@@ -238,7 +238,7 @@ namespace Com.BowenIvanov.BoatCombat
                     i = ts.Length;
                     break;
                 }
-                else if(!(ts[i].position.x > mobileAxisRT.position.x - mobileAxisRT.rect.width * .5f && ts[i].position.y < mobileAxisRT.position.y + mobileAxisRT.rect.height * .5f))
+                else if((ts[i].position.x < mobileAxisRT.position.x - mobileAxisRT.rect.width * .5f && ts[i].position.y > mobileAxisRT.position.y + mobileAxisRT.rect.height * .5f))
                 {
                     if(ts[i].phase == TouchPhase.Began)
                     {

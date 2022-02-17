@@ -5,6 +5,7 @@ using UnityEngine;
 public class FixedJoystick : Joystick
 {
     [SerializeField] public RectTransform shootRegion;
+    //[SerializeField] public Rex
 
     private void Awake()
     {

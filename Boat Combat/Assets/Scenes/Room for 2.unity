@@ -1236,7 +1236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e084ce7754861c49a1d852b469037e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offlineMode: 0
+  offlineMode: 1
 --- !u!114 &905781819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2080,6 +2080,8 @@ MonoBehaviour:
   maxHealth: 100
   mobileAxis: {fileID: 0}
   mobileLookSpeed: 5
+  mobileAxisRT: {fileID: 0}
+  mobileRT: {fileID: 0}
 --- !u!4 &1459980782
 Transform:
   m_ObjectHideFlags: 0
