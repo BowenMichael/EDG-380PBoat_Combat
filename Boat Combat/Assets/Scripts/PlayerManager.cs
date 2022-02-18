@@ -100,6 +100,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         private void Start()
         {
+
             if (PhotonNetwork.isMasterClient)
             {
                 photonView.RPC("init", PhotonTargets.AllBuffered);
@@ -260,7 +261,7 @@ namespace Com.BowenIvanov.BoatCombat
             }
 #endif
 
-            //rotHorizontal = -Input.GetAxisRaw("Mouse X");
+            //rotHorizontal = Input.GetAxisRaw("Mouse X");
 
             
 
@@ -285,12 +286,13 @@ namespace Com.BowenIvanov.BoatCombat
 
         void ProcessCameraMovement()
         {
-            if(cvCam == null)
-            {
-                return;
-            }
-            Vector3 rotation = new Vector3(0f, rotHorizontal, 0f);
-            cvCam.transform.Rotate(gameObject.transform.position, sensitivity * rotHorizontal);
+            //found that this is all built into the camera already, we dont need to code it
+            //if(cvCam == null)
+            //{
+            //    return;
+            //}
+            //Quaternion rotation = new Quaternion(0f, 30f, 0f, 0f);
+            //cvCam.transform.rotation = rotation;
         }
 
         void resetShot()
@@ -300,7 +302,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         void chargeShot()
         {
-            projSpeed = (projSpeed + 100);
+            projSpeed = (projSpeed + 150);
         }
 
 
@@ -363,8 +365,7 @@ namespace Com.BowenIvanov.BoatCombat
                     return;
                 }
 
-                proj.transform.position = new Vector3(boatPosition.x + angleModifier * numProjectiles, boatPosition.y + 2f, boatPosition.z);
-
+                proj.transform.position = new Vector3(boatPosition.x + angleModifier * numProjectiles, boatPosition.y + 4f, boatPosition.z);
                 proj.transform.rotation = boatRotation;
 
                 Vector3 front = gameObject.transform.right;
