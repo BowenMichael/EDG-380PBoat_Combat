@@ -119,8 +119,11 @@ namespace Com.BowenIvanov.BoatCombat
                 cvCam.LookAt = transform;
                 rb = GetComponent<Rigidbody>();
                 toggleCameraLookAt();
-
+#if !UNITY_ANDROID
+                cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.m_InputAxisName = "Mouse X";
+#endif
 #if UNITY_ANDROID
+                
                 mobileAxis = FindObjectOfType<FixedJoystick>();
                 mobileRT = mobileAxis.shootRegion;
                 mobileAxisRT = mobileAxis.transform.parent.GetComponentInParent<RectTransform>();
@@ -250,13 +253,14 @@ namespace Com.BowenIvanov.BoatCombat
                         CinemachineOrbitalTransposer transposer = cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
                         Vector2 diff = ts[i].position - initalTouchPoint;
                         float distance = Vector2.Dot(diff, Vector2.right);
-                        distance = Mathf.Clamp(distance, transposer.m_XAxis.m_MinValue, transposer.m_XAxis.m_MaxValue);
+                        //distance = Mathf.Clamp(distance, transposer.m_XAxis.m_MinValue, transposer.m_XAxis.m_MaxValue);
                         //Debug.Log("MoveCamera: " + distance);
                         
-                        float oldValue = transposer.m_XAxis.Value;
-                        transposer.m_XAxis.Value = oldValue + (distance / transposer.m_XAxis.m_MaxValue) * mobileLookSpeed;
+                        transposer.m_XAxis.Value += (distance) * mobileLookSpeed * Time.deltaTime;
                         //Input.simulateMouseWithTouches = true;// cvCam.GetInputAxisProvider();
+                        Debug.DrawRay(initalTouchPoint, diff, Color.red, 1.0f);
                     }
+                    
                 }
             }
 #endif
@@ -366,7 +370,7 @@ namespace Com.BowenIvanov.BoatCombat
                 }
                 Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
                 proj.transform.forward = cameraDirection;
-                proj.transform.position = new Vector3(boatPosition.x + angleModifier * numProjectiles * cameraDirection.z, boatPosition.y + 4f, boatPosition.z + angleModifier * numProjectiles * cameraDirection.x);
+                proj.transform.position = new Vector3(boatPosition.x + angleModifier * numProjectiles * -cameraDirection.z, boatPosition.y + 4f, boatPosition.z + angleModifier * numProjectiles * cameraDirection.x);
                 
 
                 Vector3 front = gameObject.transform.right;
