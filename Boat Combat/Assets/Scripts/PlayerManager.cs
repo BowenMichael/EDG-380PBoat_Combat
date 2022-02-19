@@ -172,7 +172,7 @@ namespace Com.BowenIvanov.BoatCombat
 
 #endregion
 
-#region Public Methods
+        #region Public Methods
 
 #region Acessors
 
@@ -184,7 +184,7 @@ namespace Com.BowenIvanov.BoatCombat
 
 #endregion
 
-#region Custom
+        #region Custom
 
         /// <summary>
         /// runs at update and updates player input
@@ -364,12 +364,13 @@ namespace Com.BowenIvanov.BoatCombat
                 {
                     return;
                 }
-
-                proj.transform.position = new Vector3(boatPosition.x + angleModifier * numProjectiles, boatPosition.y + 4f, boatPosition.z);
-                proj.transform.rotation = boatRotation;
+                Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
+                proj.transform.forward = cameraDirection;
+                proj.transform.position = new Vector3(boatPosition.x + angleModifier * numProjectiles * cameraDirection.z, boatPosition.y + 4f, boatPosition.z + angleModifier * numProjectiles * cameraDirection.x);
+                
 
                 Vector3 front = gameObject.transform.right;
-                Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
+                
                 Vector3 projectileDirection = new Vector3(-cameraDirection.x, cameraDirection.y, -cameraDirection.z).normalized;
                 
                 proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed) * Time.fixedDeltaTime);
@@ -412,7 +413,7 @@ namespace Com.BowenIvanov.BoatCombat
 
 #endregion
 
-#region Custom RPC
+        #region Custom RPC
 
         /// <summary>
         /// RPC Function that runs init for players. Only to run on the master client

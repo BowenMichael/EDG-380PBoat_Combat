@@ -276,7 +276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7435c03b9e25a384bb7e5d63b559ef71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 200, z: 0}
+  offset: {x: 0, y: -200, z: 0}
   startScale: 10
   MaxDistance: 100
   fill: {fileID: 0}
