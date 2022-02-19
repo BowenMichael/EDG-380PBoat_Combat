@@ -14,10 +14,23 @@ namespace Com.BowenIvanov.BoatCombat
         Vector2 sizeDelta;
         public Slider fill;
         public GameObject background;
+
+        private string playerName;
+        public Text username;
+
+
         private void Start()
         {
             sizeDelta = transform.GetComponent<RectTransform>().sizeDelta * startScale;
             fill = GetComponent<Slider>();
+
+            playerName = PhotonNetwork.playerName;
+            if (playerName != null)
+                username.text = playerName;
+                //username.text = "Username";
+
+            else
+                username.text = "Username";
         }
         private void FixedUpdate()
         {

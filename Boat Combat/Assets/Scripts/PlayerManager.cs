@@ -100,6 +100,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         private void Start()
         {
+
             if (PhotonNetwork.isMasterClient)
             {
                 photonView.RPC("init", PhotonTargets.AllBuffered);
@@ -118,8 +119,11 @@ namespace Com.BowenIvanov.BoatCombat
                 cvCam.LookAt = transform;
                 rb = GetComponent<Rigidbody>();
                 toggleCameraLookAt();
-
+#if !UNITY_ANDROID
+                cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.m_InputAxisName = "Mouse X";
+#endif
 #if UNITY_ANDROID
+                
                 mobileAxis = FindObjectOfType<FixedJoystick>();
                 mobileRT = mobileAxis.shootRegion;
                 mobileAxisRT = mobileAxis.transform.parent.GetComponentInParent<RectTransform>();
@@ -171,7 +175,7 @@ namespace Com.BowenIvanov.BoatCombat
 
 #endregion
 
-#region Public Methods
+        #region Public Methods
 
 #region Acessors
 
@@ -183,7 +187,7 @@ namespace Com.BowenIvanov.BoatCombat
 
 #endregion
 
-#region Custom
+        #region Custom
 
         /// <summary>
         /// runs at update and updates player input
@@ -249,18 +253,19 @@ namespace Com.BowenIvanov.BoatCombat
                         CinemachineOrbitalTransposer transposer = cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
                         Vector2 diff = ts[i].position - initalTouchPoint;
                         float distance = Vector2.Dot(diff, Vector2.right);
-                        distance = Mathf.Clamp(distance, transposer.m_XAxis.m_MinValue, transposer.m_XAxis.m_MaxValue);
+                        //distance = Mathf.Clamp(distance, transposer.m_XAxis.m_MinValue, transposer.m_XAxis.m_MaxValue);
                         //Debug.Log("MoveCamera: " + distance);
                         
-                        float oldValue = transposer.m_XAxis.Value;
-                        transposer.m_XAxis.Value = oldValue + (distance / transposer.m_XAxis.m_MaxValue) * mobileLookSpeed;
+                        transposer.m_XAxis.Value += (distance) * mobileLookSpeed * Time.deltaTime;
                         //Input.simulateMouseWithTouches = true;// cvCam.GetInputAxisProvider();
+                        Debug.DrawRay(initalTouchPoint, diff, Color.red, 1.0f);
                     }
+                    
                 }
             }
 #endif
 
-            //rotHorizontal = -Input.GetAxisRaw("Mouse X");
+            //rotHorizontal = Input.GetAxisRaw("Mouse X");
 
             
 
@@ -285,12 +290,13 @@ namespace Com.BowenIvanov.BoatCombat
 
         void ProcessCameraMovement()
         {
-            if(cvCam == null)
-            {
-                return;
-            }
-            Vector3 rotation = new Vector3(0f, rotHorizontal, 0f);
-            cvCam.transform.Rotate(gameObject.transform.position, sensitivity * rotHorizontal);
+            //found that this is all built into the camera already, we dont need to code it
+            //if(cvCam == null)
+            //{
+            //    return;
+            //}
+            //Quaternion rotation = new Quaternion(0f, 30f, 0f, 0f);
+            //cvCam.transform.rotation = rotation;
         }
 
         void resetShot()
@@ -300,7 +306,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         void chargeShot()
         {
-            projSpeed = (projSpeed + 100);
+            projSpeed = (projSpeed + 150);
         }
 
 
@@ -362,13 +368,13 @@ namespace Com.BowenIvanov.BoatCombat
                 {
                     return;
                 }
-
-                proj.transform.position = new Vector3(boatPosition.x + angleModifier * numProjectiles, boatPosition.y + 2f, boatPosition.z);
-
-                proj.transform.rotation = boatRotation;
+                Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
+                proj.transform.forward = cameraDirection;
+                proj.transform.position = new Vector3(boatPosition.x + angleModifier * numProjectiles * -cameraDirection.z, boatPosition.y + 4f, boatPosition.z + angleModifier * numProjectiles * cameraDirection.x);
+                
 
                 Vector3 front = gameObject.transform.right;
-                Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
+                
                 Vector3 projectileDirection = new Vector3(-cameraDirection.x, cameraDirection.y, -cameraDirection.z).normalized;
                 
                 proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed) * Time.fixedDeltaTime);
@@ -411,7 +417,7 @@ namespace Com.BowenIvanov.BoatCombat
 
 #endregion
 
-#region Custom RPC
+        #region Custom RPC
 
         /// <summary>
         /// RPC Function that runs init for players. Only to run on the master client
