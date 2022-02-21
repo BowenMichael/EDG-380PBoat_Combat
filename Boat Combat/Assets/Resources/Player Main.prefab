@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 7808871593006261825}
   m_Layer: 0
   m_Name: Player Main
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -220,7 +220,6 @@ MonoBehaviour:
   projSpeed: 0
   numProjectiles: 5
   projectilesSpreadAngle: 7.94
-  rotHorizontal: 0
   healthBarPrefab: {fileID: 8273305809662755210, guid: 5b7c62b17b975134abe800810b080935, type: 3}
   maxHealth: 100
   mobileAxis: {fileID: 0}

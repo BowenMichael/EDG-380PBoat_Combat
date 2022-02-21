@@ -169,7 +169,7 @@ namespace Com.BowenIvanov.BoatCombat
         {
             if (collision.other.gameObject.tag == "Projectile")
             {
-                currentHealth -= 25;
+                takeDamage(25);
             }
         }
 
@@ -413,6 +413,11 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 photonView.RPC("onDeath", PhotonTargets.All);
             }
+        }
+
+        public void takeDamage(int value)
+        {
+            currentHealth -= value;
         }
 
 #endregion
