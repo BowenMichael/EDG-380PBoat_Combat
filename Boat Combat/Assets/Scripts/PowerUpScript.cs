@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Com.BowenIvanov.BoatCombat
 {
-    public class TrapScript : Photon.MonoBehaviour
+    public class PowerUpScript : Photon.MonoBehaviour
     {
         // Start is called before the first frame update
         void Start()
@@ -30,7 +30,7 @@ namespace Com.BowenIvanov.BoatCombat
             }
             if (collision.gameObject.tag == "Player")
             {
-                collision.gameObject.GetComponent<PlayerManager>().takeDamage(25);
+                //change speed
                 PhotonNetwork.Destroy(gameObject);
 
                 //return;
