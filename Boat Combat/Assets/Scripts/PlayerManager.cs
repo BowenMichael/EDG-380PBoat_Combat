@@ -135,7 +135,9 @@ namespace Com.BowenIvanov.BoatCombat
 
             //Instantiate Healthbar
             canvasTransform = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Transform>();
-            healthSlider = Instantiate(healthBarPrefab, canvasTransform).GetComponent<Slider>();
+            GameObject healthTmp = Instantiate(healthBarPrefab, canvasTransform);
+            healthTmp.GetComponent<HealthBarScript>().setPlayer(this.gameObject);
+            healthSlider = healthTmp.GetComponent<Slider>();
 
             //set current health to max health
             currentHealth = maxHealth;
