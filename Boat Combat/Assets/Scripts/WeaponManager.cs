@@ -171,14 +171,14 @@ namespace Com.BowenIvanov.BoatCombat
                 }
                 Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
                 proj.transform.forward = cameraDirection;
-                proj.transform.position = new Vector3(boatPosition.x + angleModifier * i * -cameraDirection.z + (2f * i), boatPosition.y + 4f, boatPosition.z + angleModifier * i * cameraDirection.x);
-
+                proj.transform.position = new Vector3(boatPosition.x + angleModifier * i * -cameraDirection.z + (2f * i), boatPosition.y + 1f, boatPosition.z + angleModifier * i * cameraDirection.x);
+                proj.transform.position += (proj.transform.forward * 3);
 
                 Vector3 front = gameObject.transform.right;
 
-                Vector3 projectileDirection = new Vector3(-cameraDirection.x, cameraDirection.y, -cameraDirection.z).normalized;
+                Vector3 projectileDirection = new Vector3(-cameraDirection.x, 0, -cameraDirection.z).normalized;
 
-                proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed) * Time.fixedDeltaTime);
+                proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed + 1000) * Time.fixedDeltaTime);
             }
         }
 

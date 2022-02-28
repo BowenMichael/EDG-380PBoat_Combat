@@ -215,8 +215,8 @@ MonoBehaviour:
   cameraPrefab: {fileID: 1553192701770496705, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
   testProjectile: {fileID: 6975210507314041288, guid: eeb44b604e36d564eb87ddf8b93ed9ce, type: 3}
   cvCam: {fileID: 0}
-  speed: 1500
-  rotSpeed: 200
+  speed: 500
+  rotSpeed: 100
   sensitivity: 2
   team: 0
   projSpeed: 0
@@ -242,8 +242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentProjectile: testProjectile
   projSpeed: 0
-  speed: 1500
-  numProjectiles: 5
+  speed: 500
+  numProjectiles: 1
   testProjectile: {fileID: 6975210507314041288, guid: eeb44b604e36d564eb87ddf8b93ed9ce, type: 3}
 --- !u!114 &5008256347506235867
 MonoBehaviour:
@@ -337,7 +337,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    ExtrapolateOption: 3
+    ExtrapolateOption: 2
     ExtrapolateSpeed: 1
     ExtrapolateIncludingRoundTripTime: 1
     ExtrapolateNumberOfStoredPositions: 1
@@ -361,8 +361,8 @@ Rigidbody:
   m_GameObject: {fileID: 3518620919461193308}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 5
-  m_AngularDrag: 0.05
+  m_Drag: 1
+  m_AngularDrag: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
