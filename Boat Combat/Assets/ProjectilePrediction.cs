@@ -23,7 +23,7 @@ namespace Com.BowenIvanov.BoatCombat {
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
             if (plrM.photonView.isMine)
             {
