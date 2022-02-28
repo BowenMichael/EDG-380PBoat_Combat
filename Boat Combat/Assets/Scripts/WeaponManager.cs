@@ -26,6 +26,9 @@ namespace Com.BowenIvanov.BoatCombat
         private float horizontal;
         private float vertical;
 
+        PlayerManager plm;
+        RectTransform mobileFireRT;
+
         #endregion
 
         #region MonoBehavior Callbacks
@@ -34,6 +37,12 @@ namespace Com.BowenIvanov.BoatCombat
         {
             currentProjectile = "testProjectile";//default
 
+        }
+
+        private void Start()
+        {
+            plm = GetComponent<PlayerManager>();
+            mobileFireRT = plm.getFireRT();
         }
 
         // Update is called once per frame
@@ -88,16 +97,13 @@ namespace Com.BowenIvanov.BoatCombat
             }
 
 #else
-            horizontal = -mobileAxis.Horizontal;
-            vertical = mobileAxis.Vertical;
-
             //Camera Controls
             Touch[] ts = Input.touches;
 
 
             for (int i = 0; i < ts.Length; i++)
             {
-                if ((ts[i].position.x < mobileRT.position.x + mobileRT.rect.width * .5f && ts[i].position.y < mobileRT.position.y + mobileRT.rect.height * .5f))
+                if ((ts[i].position.x < mobileFireRT.position.x + mobileFireRT.rect.width * .5f && ts[i].position.y < mobileFireRT.position.y + mobileFireRT.rect.height * .5f))
                 {
                     //Debug.Log("Fire area: " + ts[i].position);
                     if (ts[i].phase == TouchPhase.Began)
@@ -114,26 +120,6 @@ namespace Com.BowenIvanov.BoatCombat
                     }
                     i = ts.Length;
                     break;
-                }
-                else if((ts[i].position.x < mobileAxisRT.position.x - mobileAxisRT.rect.width * .5f && ts[i].position.y > mobileAxisRT.position.y + mobileAxisRT.rect.height * .5f))
-                {
-                    if(ts[i].phase == TouchPhase.Began)
-                    {
-                        initalTouchPoint = ts[i].position;
-                    }
-                    else if(ts[i].phase == TouchPhase.Moved)
-                    {
-                        CinemachineOrbitalTransposer transposer = cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
-                        Vector2 diff = ts[i].position - initalTouchPoint;
-                        float distance = Vector2.Dot(diff, Vector2.right);
-                        //distance = Mathf.Clamp(distance, transposer.m_XAxis.m_MinValue, transposer.m_XAxis.m_MaxValue);
-                        //Debug.Log("MoveCamera: " + distance);
-                        
-                        transposer.m_XAxis.Value += (distance) * mobileLookSpeed * Time.deltaTime;
-                        //Input.simulateMouseWithTouches = true;// cvCam.GetInputAxisProvider();
-                        Debug.DrawRay(initalTouchPoint, diff, Color.red, 1.0f);
-                    }
-                    
                 }
             }
 #endif

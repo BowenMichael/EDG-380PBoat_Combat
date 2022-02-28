@@ -57,6 +57,10 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] private float mobileLookSpeed = 5f;
         [SerializeField] RectTransform mobileAxisRT;
         [SerializeField]RectTransform mobileRT;
+        [SerializeField] bool isSliderControls;
+        [SerializeField] Slider throttleSlider;
+        [SerializeField] Slider steeringSlider;
+        private MobileManager mobileManager;
 
         Vector2 initalTouchPoint;
 
@@ -127,10 +131,10 @@ namespace Com.BowenIvanov.BoatCombat
                 mobileAxis = FindObjectOfType<FixedJoystick>();
                 mobileRT = mobileAxis.shootRegion;
                 mobileAxisRT = mobileAxis.transform.parent.GetComponentInParent<RectTransform>();
+                mobileManager = FindObjectOfType<MobileManager>();
+                throttleSlider = mobileManager.getThrottle();
+                steeringSlider = mobileManager.getSteering();
 #endif
-
-
-
             }
 
             //Instantiate Healthbar
@@ -185,6 +189,11 @@ namespace Com.BowenIvanov.BoatCombat
 
         public float getProjSpeed() { return projSpeed; }
 
+        public RectTransform getFireRT()
+        {
+            return mobileRT;
+        }
+
 #endregion
 
 #endregion
@@ -200,72 +209,45 @@ namespace Com.BowenIvanov.BoatCombat
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
 
-            //fire projectile
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                resetShot();
-            }
-
-            if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Mouse0))
-            {
-                chargeShot();
-            }
-
-            if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Mouse0))
-            {
-                //fireProjectile();
-            }
-
 #else
-            horizontal = -mobileAxis.Horizontal;
-            vertical = mobileAxis.Vertical;
+            if (isSliderControls)
+            {
+                horizontal = steeringSlider.value;
+                vertical = throttleSlider.value;
+            }
+            else
+            {
+                horizontal = -mobileAxis.Horizontal;
+                vertical = -mobileAxis.Vertical;
+            }
 
             //Camera Controls
             Touch[] ts = Input.touches;
 
-
             for (int i = 0; i < ts.Length; i++)
             {
-                if ((ts[i].position.x < mobileRT.position.x + mobileRT.rect.width * .5f && ts[i].position.y < mobileRT.position.y + mobileRT.rect.height * .5f))
+                if ((ts[i].position.x < mobileAxisRT.position.x - mobileAxisRT.rect.width * .5f && ts[i].position.y > mobileAxisRT.position.y + mobileAxisRT.rect.height * .5f))
                 {
-                    //Debug.Log("Fire area: " + ts[i].position);
                     if (ts[i].phase == TouchPhase.Began)
-                    {
-                        resetShot();
-                    }
-                    else if (ts[i].phase == TouchPhase.Stationary || ts[i].phase == TouchPhase.Moved)
-                    {
-                        chargeShot();
-                    }
-                    else if (ts[i].phase == TouchPhase.Ended)
-                    {
-                        fireProjectile();
-                    }
-                    i = ts.Length;
-                    break;
-                }
-                else if((ts[i].position.x < mobileAxisRT.position.x - mobileAxisRT.rect.width * .5f && ts[i].position.y > mobileAxisRT.position.y + mobileAxisRT.rect.height * .5f))
-                {
-                    if(ts[i].phase == TouchPhase.Began)
                     {
                         initalTouchPoint = ts[i].position;
                     }
-                    else if(ts[i].phase == TouchPhase.Moved)
+                    else if (ts[i].phase != TouchPhase.Began)
                     {
                         CinemachineOrbitalTransposer transposer = cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
                         Vector2 diff = ts[i].position - initalTouchPoint;
                         float distance = Vector2.Dot(diff, Vector2.right);
                         //distance = Mathf.Clamp(distance, transposer.m_XAxis.m_MinValue, transposer.m_XAxis.m_MaxValue);
                         //Debug.Log("MoveCamera: " + distance);
-                        
+
                         transposer.m_XAxis.Value += (distance) * mobileLookSpeed * Time.deltaTime;
                         //Input.simulateMouseWithTouches = true;// cvCam.GetInputAxisProvider();
                         Debug.DrawRay(initalTouchPoint, diff, Color.red, 1.0f);
                     }
-                    
+
                 }
             }
-#endif
+            #endif
 
             //rotHorizontal = Input.GetAxisRaw("Mouse X");
 
