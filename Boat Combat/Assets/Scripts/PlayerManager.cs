@@ -169,7 +169,7 @@ namespace Com.BowenIvanov.BoatCombat
         {
             if (collision.other.gameObject.tag == "Projectile")
             {
-                takeDamage(25);
+                takeDamage(10);
             }
         }
 
