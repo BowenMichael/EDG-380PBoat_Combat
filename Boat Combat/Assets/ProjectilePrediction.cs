@@ -9,12 +9,12 @@ namespace Com.BowenIvanov.BoatCombat {
         public GameObject indicator;
 
         Transform parent;
-        private PlayerManager plrM;
+        private WeaponManager plrM;
         GameObject aim;
         // Start is called before the first frame update
         void Start()
         {
-            plrM = GetComponent<PlayerManager>();
+            plrM = GetComponent<WeaponManager>();
             //parent = Instantiate(new GameObject()).transform;
             if (plrM.photonView.isMine)
             {

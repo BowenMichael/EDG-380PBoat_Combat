@@ -169,7 +169,7 @@ namespace Com.BowenIvanov.BoatCombat
         {
             if (collision.other.gameObject.tag == "Projectile")
             {
-                currentHealth -= 25;
+                takeDamage(25);
             }
         }
 
@@ -211,9 +211,9 @@ namespace Com.BowenIvanov.BoatCombat
 
             if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Mouse0))
             {
-                fireProjectile();
+                //fireProjectile();
             }
-            
+
 #else
             horizontal = -mobileAxis.Horizontal;
             vertical = mobileAxis.Vertical;
@@ -267,7 +267,7 @@ namespace Com.BowenIvanov.BoatCombat
 
             //rotHorizontal = Input.GetAxisRaw("Mouse X");
 
-            
+
 
 
             if (Input.GetKeyDown(KeyCode.I))
@@ -413,6 +413,11 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 photonView.RPC("onDeath", PhotonTargets.All);
             }
+        }
+
+        public void takeDamage(int value)
+        {
+            currentHealth -= value;
         }
 
 #endregion
