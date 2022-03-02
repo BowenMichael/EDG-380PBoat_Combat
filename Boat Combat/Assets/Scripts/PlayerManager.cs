@@ -391,6 +391,19 @@ namespace Com.BowenIvanov.BoatCombat
             photonView.RPC("sendTeam", PhotonTargets.AllBuffered, team);
         }
 
+        public void SpeedPowerUp()
+        {
+            StartCoroutine(BoostSpeed());
+        }
+
+        IEnumerator BoostSpeed()//speed doubled for 5 seconds
+        {
+            Debug.Log("Speed Boosted");
+            speed *= 2;
+            yield return new WaitForSeconds(5);
+            speed /= 2;
+        }
+
         void checkHealth()
         {
             if (currentHealth <= 0)

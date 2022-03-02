@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1836,6 +1836,7 @@ GameObject:
   - component: {fileID: 905781817}
   - component: {fileID: 905781818}
   - component: {fileID: 905781819}
+  - component: {fileID: 905781820}
   m_Layer: 0
   m_Name: Instantiation Manager
   m_TagString: Untagged
@@ -1869,7 +1870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e084ce7754861c49a1d852b469037e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offlineMode: 1
+  offlineMode: 0
 --- !u!114 &905781819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1884,6 +1885,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 3518620919461193308, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
   maxTeams: 2
+--- !u!114 &905781820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905781816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760738bbaad3e434cab992173cdfa88e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numOfTraps: 10
+  numOfPowerUps: 10
 --- !u!1 &937813448
 GameObject:
   m_ObjectHideFlags: 0
@@ -1971,6 +1986,7 @@ GameObject:
   - component: {fileID: 1054634414}
   - component: {fileID: 1054634413}
   - component: {fileID: 1054634416}
+  - component: {fileID: 1054634417}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2077,6 +2093,39 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1054634417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054634412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &1211640287
 GameObject:
   m_ObjectHideFlags: 0

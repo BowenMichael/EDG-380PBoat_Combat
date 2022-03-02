@@ -24,20 +24,22 @@ namespace Com.BowenIvanov.BoatCombat
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.TryGetComponent(out testProjectileScript test))
-            {
-                return;
-            }
+            //if (collision.gameObject.TryGetComponent(out testProjectileScript test))
+            //{
+            //    return;
+            //}
             if (collision.gameObject.tag == "Player")
             {
                 collision.gameObject.GetComponent<PlayerManager>().takeDamage(25);
                 PhotonNetwork.Destroy(gameObject);
 
+                if (photonView.isMine)
+                    if (photonView.isRuntimeInstantiated)
+                        PhotonNetwork.Destroy(gameObject);
+
+
                 //return;
             }
-            if (photonView.isMine)
-                if (photonView.isRuntimeInstantiated)
-                    PhotonNetwork.Destroy(gameObject);
         }
     }
 
