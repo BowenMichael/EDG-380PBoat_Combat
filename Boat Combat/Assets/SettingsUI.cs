@@ -17,7 +17,7 @@ namespace Com.BowenIvanov.BoatCombat
         // Start is called before the first frame update
         void Start()
         {
-#if!UNITY_ANDROID
+#if!(UNITY_ANDROID || UNITY_IOS)
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
 #endif
@@ -28,7 +28,7 @@ namespace Com.BowenIvanov.BoatCombat
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-#if !UNITY_ANDROID
+#if !(UNITY_ANDROID || UNITY_IOS)
                 settingUI.SetActive(!settingUI.activeSelf);
                 Cursor.visible = settingUI.activeSelf;
 #endif

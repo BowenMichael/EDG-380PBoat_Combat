@@ -123,10 +123,10 @@ namespace Com.BowenIvanov.BoatCombat
                 cvCam.LookAt = transform;
                 rb = GetComponent<Rigidbody>();
                 toggleCameraLookAt();
-#if !UNITY_ANDROID
+#if !(UNITY_ANDROID || UNITY_IOS)
                 cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.m_InputAxisName = "Mouse X";
 #endif
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
                 
                 mobileAxis = FindObjectOfType<FixedJoystick>();
                 mobileRT = mobileAxis.shootRegion;
@@ -205,7 +205,7 @@ namespace Com.BowenIvanov.BoatCombat
         /// </summary>
         void ProcessInput()
         {
-#if !UNITY_ANDROID
+#if !(UNITY_ANDROID || UNITY_IOS)
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
 
@@ -389,19 +389,6 @@ namespace Com.BowenIvanov.BoatCombat
         {
             team = PlayerSpawnManager.self.getTeam();
             photonView.RPC("sendTeam", PhotonTargets.AllBuffered, team);
-        }
-
-        public void SpeedPowerUp()
-        {
-            StartCoroutine(BoostSpeed());
-        }
-
-        IEnumerator BoostSpeed()//speed doubled for 5 seconds
-        {
-            Debug.Log("Speed Boosted");
-            speed *= 2;
-            yield return new WaitForSeconds(5);
-            speed /= 2;
         }
 
         void checkHealth()

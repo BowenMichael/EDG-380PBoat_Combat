@@ -76,7 +76,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         void ProcessInput()
         {
-#if !UNITY_ANDROID
+#if !(UNITY_ANDROID || UNITY_IOS)
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
 
