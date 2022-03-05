@@ -15,6 +15,8 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] private float projSpeed;
         [SerializeField] private float speed;
         [SerializeField] private int numProjectiles;
+        [SerializeField] private float fireRate;
+        [SerializeField] private int maxAmmo;
 
         public GameObject testProjectile;
 
@@ -25,6 +27,9 @@ namespace Com.BowenIvanov.BoatCombat
 
         private float horizontal;
         private float vertical;
+        private float lastFired;
+        private int currentAmmo;
+        private bool isReloading = false;
 
         PlayerManager plm;
         RectTransform mobileFireRT;
@@ -43,6 +48,9 @@ namespace Com.BowenIvanov.BoatCombat
         {
             plm = GetComponent<PlayerManager>();
             mobileFireRT = plm.getFireRT();
+
+            lastFired = Time.time;
+            currentAmmo = maxAmmo;
         }
 
         // Update is called once per frame
@@ -88,12 +96,30 @@ namespace Com.BowenIvanov.BoatCombat
 
             if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Mouse0))
             {
-                chargeShot();
+                if (isReloading)
+                    return;
+
+                if(Time.time - lastFired > 1 / fireRate)
+                {
+                    lastFired = Time.time;
+                    fireProjectile();
+                    currentAmmo--;
+                    if(currentAmmo <= 0)
+                    {
+                        StartCoroutine(reloadWeapon());
+                    }
+                }
+                //chargeShot();
             }
 
             if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Mouse0))
             {
-                fireProjectile();
+                //fireProjectile();
+            }
+
+            if(Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo)
+            {
+                StartCoroutine(reloadWeapon());
             }
 
 #else
@@ -171,6 +197,17 @@ namespace Com.BowenIvanov.BoatCombat
 
                 proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed + 1000) * Time.fixedDeltaTime);
             }
+        }
+
+        IEnumerator reloadWeapon()
+        {
+            isReloading = true;
+
+            Debug.Log("Reloading");
+            yield return new WaitForSeconds(1.5f);
+            currentAmmo = maxAmmo;
+
+            isReloading = false;
         }
 
         
