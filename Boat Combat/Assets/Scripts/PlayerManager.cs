@@ -59,6 +59,7 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField]RectTransform mobileRT;
         [SerializeField] bool isSliderControls;
         [SerializeField] bool isAccelControls;
+        [SerializeField] float AccelSensitivity = 1.5f;
         [SerializeField] Slider throttleSlider;
         [SerializeField] Slider steeringSlider;
         private MobileManager mobileManager;
@@ -135,6 +136,7 @@ namespace Com.BowenIvanov.BoatCombat
                 mobileManager = FindObjectOfType<MobileManager>();
                 throttleSlider = mobileManager.getThrottle();
                 steeringSlider = mobileManager.getSteering();
+                
 #endif
             }
 
@@ -219,16 +221,16 @@ namespace Com.BowenIvanov.BoatCombat
             else if(isAccelControls)
             {
                 Vector3 tilt = Input.acceleration;
-                bool isFlat = true;
-                if (isFlat)
-                {
-                    tilt = Quaternion.Euler(90, 0, 0) * tilt;
-                }
 
-                horizontal = Input.acceleration.z;
-                vertical = Input.acceleration.y;
+                tilt = Quaternion.Euler(90, 0, 0) * tilt;
+                //tilt = Quaternion.Euler(0, 0, 45) * tilt;
+                //tilt = Quaternion.Euler(0, 45, 0) * tilt;
+                
 
-                Debug.DrawRay(transform.position + Vector3.up, new Vector3(vertical, 0.0f, horizontal), Color.cyan);
+                horizontal = Mathf.Clamp(Input.acceleration.x * AccelSensitivity, -1, 1);
+                vertical = Mathf.Clamp((Input.acceleration.y + .5f) * AccelSensitivity, -1, 1);
+
+                Debug.DrawRay(transform.position + Vector3.up, transform.worldToLocalMatrix * -new Vector3(vertical, 0.0f, horizontal), Color.cyan);
             }
             else
             {

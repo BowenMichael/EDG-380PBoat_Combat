@@ -230,6 +230,7 @@ MonoBehaviour:
   mobileRT: {fileID: 0}
   isSliderControls: 0
   isAccelControls: 1
+  AccelSensitivity: 2
   throttleSlider: {fileID: 0}
   steeringSlider: {fileID: 0}
 --- !u!114 &5268632159674632707
