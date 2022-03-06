@@ -8,7 +8,7 @@ namespace Com.BowenIvanov.BoatCombat
 {
     public class Launcher : PunBehaviour
     {
-        public const int NUM_PLAYER_PER_ROOM = 2; //could read this into game from network config
+        public const int NUM_PLAYER_PER_ROOM = 4; //could read this into game from network config
         #region Private Serializable Fields
 
         /// <summary>
@@ -27,6 +27,8 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField]
         private GameObject connectedLabel;
 
+
+
         #endregion
 
         #region Private Fields
@@ -34,6 +36,8 @@ namespace Com.BowenIvanov.BoatCombat
         string gameVersion = "1"; //This client's version number. Users are separated from each other by gameVersion which allows you to make breaking changes
 
         bool isConnecting; //Keeps track of the process. Since connection is asynchronous and is based on several call backs from photon. we need to keep track of this to properly adjust the behavior when we recieve call back by photon. Typically this is used for onConnectedToMaster() callback
+
+        bool isTwoPlayer = true;
 
         #endregion
 
@@ -71,13 +75,24 @@ namespace Com.BowenIvanov.BoatCombat
 
         public override void OnJoinedRoom()
         {
-            if (PhotonNetwork.room.PlayerCount == 1)
+            if (isTwoPlayer)
             {
-                Debug.Log("We load the 'Room for 1'");
+                if (PhotonNetwork.room.PlayerCount == 1)
+                {
+                    Debug.Log("We load the 'Room for 1'");
 
-                PhotonNetwork.LoadLevel("Room for 1");
+                    PhotonNetwork.LoadLevel("Room for 1");
+                }
             }
+            else
+            {
+                if (PhotonNetwork.room.PlayerCount == 1)
+                {
+                    Debug.Log("We load the 'Room for 3'");
 
+                    PhotonNetwork.LoadLevel("Room for 3");
+                }
+            }
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
             progressLabel.SetActive(false);
             connectedLabel.SetActive(true);
@@ -113,10 +128,17 @@ namespace Com.BowenIvanov.BoatCombat
         /// -If already connected Join a random room
         /// -If not yet connected, connect this applicaiton instance to Photon Cloud Network
         /// </summary>
-        public void connect()
+        public void connect(bool isTwoPlayer)
         {
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
+
+            this.isTwoPlayer = isTwoPlayer;
+
+            if(isTwoPlayer)
+                PlayerPrefs.SetInt("isTwoPlayer", 1);
+            else
+                PlayerPrefs.SetInt("isTwoPlayer", 0);
 
             if (PhotonNetwork.connected)
             {

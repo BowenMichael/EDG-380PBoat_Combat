@@ -26,9 +26,6 @@ namespace Com.BowenIvanov.BoatCombat
         }
         private void FixedUpdate()
         {
-            
-
-
             if(player == null)
             {
                 if (PlayerManager.LocalPlayerInstance == null)

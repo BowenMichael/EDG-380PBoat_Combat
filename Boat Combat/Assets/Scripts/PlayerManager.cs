@@ -58,6 +58,7 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] RectTransform mobileAxisRT;
         [SerializeField]RectTransform mobileRT;
         [SerializeField] bool isSliderControls;
+        [SerializeField] bool isAccelControls;
         [SerializeField] Slider throttleSlider;
         [SerializeField] Slider steeringSlider;
         private MobileManager mobileManager;
@@ -173,7 +174,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.other.gameObject.tag == "Projectile")
+            if (collision.gameObject.tag == "Projectile")
             {
                 takeDamage(10);
             }
@@ -214,6 +215,20 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 horizontal = steeringSlider.value;
                 vertical = throttleSlider.value;
+            }
+            else if(isAccelControls)
+            {
+                Vector3 tilt = Input.acceleration;
+                bool isFlat = true;
+                if (isFlat)
+                {
+                    tilt = Quaternion.Euler(90, 0, 0) * tilt;
+                }
+
+                horizontal = Input.acceleration.z;
+                vertical = Input.acceleration.y;
+
+                Debug.DrawRay(transform.position + Vector3.up, new Vector3(vertical, 0.0f, horizontal), Color.cyan);
             }
             else
             {
