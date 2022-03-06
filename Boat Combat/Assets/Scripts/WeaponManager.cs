@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.UI;
 
 
 namespace Com.BowenIvanov.BoatCombat
@@ -19,6 +20,7 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] private int maxAmmo;
 
         public GameObject testProjectile;
+        public GameObject reloadText;
 
         #endregion
 
@@ -51,6 +53,9 @@ namespace Com.BowenIvanov.BoatCombat
 
             lastFired = Time.time;
             currentAmmo = maxAmmo;
+
+            reloadText = GameObject.Find("/Canvas/MainUI/Reload Text");
+            //reloadText = temp.GetComponent<Canvas>();
         }
 
         // Update is called once per frame
@@ -202,11 +207,16 @@ namespace Com.BowenIvanov.BoatCombat
         IEnumerator reloadWeapon()
         {
             isReloading = true;
-
             Debug.Log("Reloading");
+
+            //reload text shows player they are reloading
+            reloadText.SetActive(true);
+
+            //this needs to be tested
             yield return new WaitForSeconds(1.5f);
             currentAmmo = maxAmmo;
 
+            reloadText.SetActive(false);
             isReloading = false;
         }
 
