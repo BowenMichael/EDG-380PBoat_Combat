@@ -247,6 +247,8 @@ MonoBehaviour:
   projSpeed: 0
   speed: 500
   numProjectiles: 1
+  fireRate: 10
+  maxAmmo: 15
   testProjectile: {fileID: 6975210507314041288, guid: eeb44b604e36d564eb87ddf8b93ed9ce, type: 3}
 --- !u!114 &5008256347506235867
 MonoBehaviour:
