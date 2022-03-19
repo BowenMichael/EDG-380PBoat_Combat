@@ -12,6 +12,8 @@ namespace Com.BowenIvanov.BoatCombat
         #region Public Variables
 
         [Tooltip("The prefab to use for representing the player")]
+        public GameObject[] playerPrefabs;
+
         public GameObject playerPrefab;
 
         public int maxTeams;
@@ -48,6 +50,24 @@ namespace Com.BowenIvanov.BoatCombat
         #endregion
 
         #region MonoBehavior Callbacks
+
+        private void Awake()
+        {
+            Debug.Log("Boat # " + PlayerPrefs.GetInt("BoatSelect"));
+
+            if (PlayerPrefs.GetInt("BoatSelect") == 0)
+            {
+                playerPrefab = playerPrefabs[0];
+            }
+            if (PlayerPrefs.GetInt("BoatSelect") == 1)
+            {
+                playerPrefab = playerPrefabs[1];
+            }
+            if (PlayerPrefs.GetInt("BoatSelect") == 2)
+            {
+                playerPrefab = playerPrefabs[2];
+            }
+        }
 
         private void Start()
         {
