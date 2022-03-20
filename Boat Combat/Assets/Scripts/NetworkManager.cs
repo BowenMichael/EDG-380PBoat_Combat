@@ -62,7 +62,25 @@ namespace Com.BowenIvanov.BoatCombat
                 Debug.LogError("PhotonNetwork : Trying to load a level but we are not the master client");
             }
             Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.room.PlayerCount);
-            PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.room.PlayerCount);
+
+
+            
+            if (PlayerPrefs.GetInt("isTwoPlayer") == 1)
+            {
+                PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.room.PlayerCount);
+            }
+            else if(PlayerPrefs.GetInt("isTwoPlayer") == 0)
+            {
+                if (PhotonNetwork.room.PlayerCount <= 3)
+                {
+                    PhotonNetwork.LoadLevel("Room for 3");// + PhotonNetwork.room.PlayerCount);
+                }
+                else
+                {
+                    PhotonNetwork.LoadLevel("Room for 4");// + PhotonNetwork.room.PlayerCount);
+                }
+            }
+            
 
         }
 
