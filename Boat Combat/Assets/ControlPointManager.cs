@@ -2,20 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon;
-using Photon.Realtime;
 
 namespace Com.BowenIvanov.BoatCombat
 {
-    public class CapturePoint : Photon.MonoBehaviour, IPunObservable
+    public class ControlPointManager : MonoBehaviour
     {
         [Tooltip("0: Neutral")]
         [SerializeField] int teamControlling = 0;
         [SerializeField] int maxHealth = 100;
         [SerializeField] float updateHealthPerSecond;
-        [SerializeField] List<PlayerManager> contesting = new List<PlayerManager>();
-        [SerializeField] PlayerManager playerControlling;
-
+        [SerializeField] List<CapturePoint> points = new List<CapturePoint>();
 
         int health = 0;
 
@@ -53,7 +49,7 @@ namespace Com.BowenIvanov.BoatCombat
         // Update is called once per frame
         void Update()
         {
-            if(timer < 0)
+            if (timer < 0)
             {
                 updateHealth();
                 timer = updateHealthPerSecond;
@@ -72,11 +68,22 @@ namespace Com.BowenIvanov.BoatCombat
         void updateHealth()
         {
             teamContesting = 0;
-            foreach(PlayerManager pm in contesting)
+            foreach (CapturePoint pm in points)
             {
-                teamContesting += pm.getTeam();
+                if (pm.isControllingAtMaxHealth())
+                {
+                    teamContesting += pm.getControlling();
+                }
             }
-            //Debug.Log(string.Format("Team Contesting: {0}; Team Controlling: {1}; Health: {2}", teamContesting, teamControlling, health));
+
+            if(teamContesting > 1)
+            {
+                teamContesting = 1;
+            }
+            else if(teamContesting < -1)
+            {
+                teamContesting = -1;
+            }
 
             if (teamContesting == 0)
             {
@@ -85,9 +92,9 @@ namespace Com.BowenIvanov.BoatCombat
             else if (teamControlling == teamContesting)
             {
                 health++;
-                if(health >= maxHealth)
+                if (health == maxHealth)
                 {
-                    health = maxHealth;
+                    GameManager.self.WinState(teamControlling);
                 }
             }
             else if (teamControlling != teamContesting)
@@ -107,38 +114,5 @@ namespace Com.BowenIvanov.BoatCombat
             healthBar.gameObject.GetComponent<SliderController>().setColors(teamControlling, (float)health / maxHealth);
         }
 
-        public bool isControllingAtMaxHealth()
-        {
-            if(health == maxHealth)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public int getControlling()
-        {
-            return teamControlling;
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.TryGetComponent(out PlayerManager pm))
-            {
-                contesting.Add(pm);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.TryGetComponent(out PlayerManager pm))
-            {
-                contesting.Remove(pm);
-            }
-        }
-
-        
-
-        
     }
 }

@@ -24,7 +24,7 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] float matchTime;
         [SerializeField] bool skipStart;
 
-        [SerializeField] CapturePoint cp;
+        public ControlPointManager cpm;
 
         float startTime;
         float gameStartTime;
@@ -156,7 +156,7 @@ namespace Com.BowenIvanov.BoatCombat
         [PunRPC]
         void endGameByMatchTime()
         {
-            loadScene(cp.getWinning());
+            loadScene(cpm.getWinning());
         }
 
 

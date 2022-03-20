@@ -21,6 +21,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         public GameObject testProjectile;
         public GameObject reloadText;
+        public GameObject weaponBarrel;
 
         #endregion
 
@@ -187,11 +188,11 @@ namespace Com.BowenIvanov.BoatCombat
                     return;
                 }
                 Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
-                proj.transform.position = new Vector3(boatPosition.x , boatPosition.y, boatPosition.z);
-                
-                proj.transform.forward = new Vector3(-cameraDirection.x, 0f, -cameraDirection.z);
+                proj.transform.position = weaponBarrel.transform.position;//new Vector3(boatPosition.x , boatPosition.y, boatPosition.z);
 
-                proj.transform.position += (proj.transform.forward * 10);
+                proj.transform.forward = weaponBarrel.transform.right;// new Vector3(-cameraDirection.x, 0f, -cameraDirection.z);
+
+                //proj.transform.position += (proj.transform.forward * 10);
 
 
 
