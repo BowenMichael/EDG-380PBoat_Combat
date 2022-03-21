@@ -57,6 +57,8 @@ namespace Com.BowenIvanov.BoatCombat
 
             reloadText = GameObject.Find("/Canvas/MainUI/Reload Text");
             //reloadText = temp.GetComponent<Canvas>();
+
+            mobileFireRT = plm.getFireRT();
         }
 
         // Update is called once per frame

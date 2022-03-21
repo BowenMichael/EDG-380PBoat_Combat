@@ -7,6 +7,7 @@ public class MobileManager : MonoBehaviour
 {
     [SerializeField] Slider throttle;
     [SerializeField] Slider steering;
+    [SerializeField] RectTransform shootRegion;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,5 +30,10 @@ public class MobileManager : MonoBehaviour
     public Slider getSteering()
     {
         return steering;
+    }
+    
+    public RectTransform getShoot()
+    {
+        return shootRegion;
     }
 }

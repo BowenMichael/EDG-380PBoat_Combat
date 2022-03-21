@@ -303,6 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throttle: {fileID: 1528201334}
   steering: {fileID: 7948212}
+  shootRegion: {fileID: 1872726360}
 --- !u!1 &322574993
 GameObject:
   m_ObjectHideFlags: 0

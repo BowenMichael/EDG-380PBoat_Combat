@@ -130,12 +130,11 @@ namespace Com.BowenIvanov.BoatCombat
 #endif
 #if UNITY_ANDROID || UNITY_IOS
                 
-                mobileAxis = FindObjectOfType<FixedJoystick>();
-                mobileRT = mobileAxis.shootRegion;
-                mobileAxisRT = mobileAxis.transform.parent.GetComponentInParent<RectTransform>();
+                mobileRT = FindObjectOfType<MobileManager>().getShoot();
+                //mobileAxisRT = mobileAxis.transform.parent.GetComponentInParent<RectTransform>();
                 mobileManager = FindObjectOfType<MobileManager>();
-                throttleSlider = mobileManager.getThrottle();
-                steeringSlider = mobileManager.getSteering();
+                //throttleSlider = mobileManager.getThrottle();
+                //steeringSlider = mobileManager.getSteering();
                 
 #endif
             }
@@ -213,12 +212,8 @@ namespace Com.BowenIvanov.BoatCombat
             vertical = Input.GetAxis("Vertical");
 
 #else
-            if (isSliderControls)
-            {
-                horizontal = steeringSlider.value;
-                vertical = throttleSlider.value;
-            }
-            else if(isAccelControls)
+
+            if(isAccelControls)
             {
                 Vector3 tilt = Input.acceleration;
 
@@ -243,7 +238,7 @@ namespace Com.BowenIvanov.BoatCombat
 
             for (int i = 0; i < ts.Length; i++)
             {
-                if ((ts[i].position.x < mobileAxisRT.position.x - mobileAxisRT.rect.width * .5f && ts[i].position.y > mobileAxisRT.position.y + mobileAxisRT.rect.height * .5f))
+                if (!(ts[i].position.x < mobileRT.position.x + mobileRT.rect.width * .5f && ts[i].position.y < mobileRT.position.y + mobileRT.rect.height * .5f))
                 {
                     if (ts[i].phase == TouchPhase.Began)
                     {
@@ -264,7 +259,7 @@ namespace Com.BowenIvanov.BoatCombat
 
                 }
             }
-            #endif
+#endif
 
             //rotHorizontal = Input.GetAxisRaw("Mouse X");
 
