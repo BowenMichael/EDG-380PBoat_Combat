@@ -56,12 +56,19 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] private FixedJoystick mobileAxis;
         [SerializeField] private float mobileLookSpeed = 5f;
         [SerializeField] RectTransform mobileAxisRT;
-        [SerializeField]RectTransform mobileRT;
+        [SerializeField] RectTransform mobileRT;
         [SerializeField] bool isSliderControls;
-        [SerializeField] bool isAccelControls;
-        [SerializeField] float AccelSensitivity = 1.5f;
+        [SerializeField] float VertAccelSensitivity = 1.5f;
+        [SerializeField] float HortAccelSensitivity = 1.5f;
+        [SerializeField] float MaxAccelSensitivity = 5.0f;
         [SerializeField] Slider throttleSlider;
         [SerializeField] Slider steeringSlider;
+
+        [Header("Options")]
+        [SerializeField] bool pauseInput;
+        [SerializeField] bool isDragCamera;
+
+
         private MobileManager mobileManager;
 
         Vector2 initalTouchPoint;
@@ -133,7 +140,7 @@ namespace Com.BowenIvanov.BoatCombat
                 mobileRT = FindObjectOfType<MobileManager>().getShoot();
                 //mobileAxisRT = mobileAxis.transform.parent.GetComponentInParent<RectTransform>();
                 mobileManager = FindObjectOfType<MobileManager>();
-                //throttleSlider = mobileManager.getThrottle();
+                throttleSlider = mobileManager.getThrottle();
                 //steeringSlider = mobileManager.getSteering();
                 
 #endif
@@ -142,6 +149,7 @@ namespace Com.BowenIvanov.BoatCombat
             //Instantiate Healthbar
             canvasTransform = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Transform>();
             GameObject healthTmp = Instantiate(healthBarPrefab, canvasTransform);
+            healthTmp.transform.SetAsFirstSibling();
             healthTmp.GetComponent<HealthBarScript>().setPlayer(this.gameObject);
             healthSlider = healthTmp.GetComponent<Slider>();
 
@@ -185,7 +193,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         #region Public Methods
 
-#region Acessors
+            #region Acessors
 
         public int getTeam() { return team; }
 
@@ -196,9 +204,63 @@ namespace Com.BowenIvanov.BoatCombat
             return mobileRT;
         }
 
-#endregion
+        public bool getIsSliderControls() { return isSliderControls; }
+        #endregion
 
-#endregion
+            #region Mutators
+
+        public void setIsSliderControls(bool sliderControls) 
+        {
+            isSliderControls = sliderControls;
+            if (isSliderControls)
+            {
+                throttleSlider.gameObject.SetActive(true);
+            }
+            else
+            {
+                throttleSlider.gameObject.SetActive(false);
+            }
+        }
+
+        public void setPausedInput(bool isPaused)
+        {
+            pauseInput = isPaused;
+        }
+
+        public bool setIsDragCamera(bool isDrag)
+        {
+            isDragCamera = isDrag;
+            return isDragCamera;
+        }
+
+        public bool toggleIsDragCamera()
+        {
+            return setIsDragCamera(!isDragCamera);
+            
+        }
+            #endregion
+
+        /// <summary>
+        /// Sets the hortAccelSensitivity which is a scalar for the max sensitivity
+        /// </summary>
+        /// <param name="multiple">value between 0-1</param>
+        /// <returns></returns>
+        public void setHortAccelSensitivity(float multiple)
+        {
+            HortAccelSensitivity = multiple;
+        }
+
+        /// <summary>
+        /// Sets the VertAccelSensitivity which is a scalar for the max sensitivity
+        /// </summary>
+        /// <param name="multiple">value between 0-1</param>
+        /// <returns></returns>
+        public void setVertAccelSensitivity(float multiple)
+        {
+            VertAccelSensitivity = multiple;
+        }
+
+        #endregion
 
         #region Custom
 
@@ -207,65 +269,64 @@ namespace Com.BowenIvanov.BoatCombat
         /// </summary>
         void ProcessInput()
         {
+            if (pauseInput) return;
+
 #if !(UNITY_ANDROID || UNITY_IOS)
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
 
 #else
+            //Setting up tilt axis
+            Vector3 tilt = Input.acceleration;
+            tilt = Quaternion.Euler(90, 0, 0) * tilt;
 
-            if(isAccelControls)
-            {
-                Vector3 tilt = Input.acceleration;
+            //Apply tilt to the horizontal axis
+            horizontal = Mathf.Clamp(Input.acceleration.x * (HortAccelSensitivity * MaxAccelSensitivity), -1, 1);
 
-                tilt = Quaternion.Euler(90, 0, 0) * tilt;
-                //tilt = Quaternion.Euler(0, 0, 45) * tilt;
-                //tilt = Quaternion.Euler(0, 45, 0) * tilt;
-                
-
-                horizontal = Mathf.Clamp(Input.acceleration.x * AccelSensitivity, -1, 1);
-                vertical = Mathf.Clamp((Input.acceleration.y + .5f) * AccelSensitivity, -1, 1);
-
+            //If using slider controls
+            if (!isSliderControls)
+            {            
+                vertical = Mathf.Clamp((Input.acceleration.y + .5f) * (VertAccelSensitivity * MaxAccelSensitivity), -1, 1);
                 Debug.DrawRay(transform.position + Vector3.up, transform.worldToLocalMatrix * -new Vector3(vertical, 0.0f, horizontal), Color.cyan);
+
             }
             else
             {
-                horizontal = -mobileAxis.Horizontal;
-                vertical = -mobileAxis.Vertical;
+                vertical = throttleSlider.value;
+
             }
 
-            //Camera Controls
-            Touch[] ts = Input.touches;
 
+            Touch[] ts = Input.touches;
+            //Looping through touches on the screen
             for (int i = 0; i < ts.Length; i++)
             {
-                if (!(ts[i].position.x < mobileRT.position.x + mobileRT.rect.width * .5f && ts[i].position.y < mobileRT.position.y + mobileRT.rect.height * .5f))
+                if (isDragCamera)
                 {
-                    if (ts[i].phase == TouchPhase.Began)
+                    if (!mobileRT.rect.Contains(ts[i].position) &&
+                        !throttleSlider.GetComponent<RectTransform>().rect.Contains(ts[i].position))
                     {
-                        initalTouchPoint = ts[i].position;
-                    }
-                    else if (ts[i].phase != TouchPhase.Began)
-                    {
-                        CinemachineOrbitalTransposer transposer = cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
-                        Vector2 diff = ts[i].position - initalTouchPoint;
-                        float distance = Vector2.Dot(diff, Vector2.right);
-                        //distance = Mathf.Clamp(distance, transposer.m_XAxis.m_MinValue, transposer.m_XAxis.m_MaxValue);
-                        //Debug.Log("MoveCamera: " + distance);
+                        if (ts[i].phase == TouchPhase.Began)
+                        {
+                            initalTouchPoint = ts[i].position;
+                        }
+                        else if (ts[i].phase != TouchPhase.Began)
+                        {
+                            CinemachineOrbitalTransposer transposer = cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
+                            Vector2 diff = ts[i].position - initalTouchPoint;
+                            float distance = Vector2.Dot(diff, Vector2.right);
+                            //distance = Mathf.Clamp(distance, transposer.m_XAxis.m_MinValue, transposer.m_XAxis.m_MaxValue);
+                            //Debug.Log("MoveCamera: " + distance);
 
-                        transposer.m_XAxis.Value += (distance) * mobileLookSpeed * Time.deltaTime;
-                        //Input.simulateMouseWithTouches = true;// cvCam.GetInputAxisProvider();
-                        Debug.DrawRay(initalTouchPoint, diff, Color.red, 1.0f);
-                    }
+                            transposer.m_XAxis.Value += (distance) * mobileLookSpeed * Time.deltaTime;
+                            //Input.simulateMouseWithTouches = true;// cvCam.GetInputAxisProvider();
+                            Debug.DrawRay(initalTouchPoint, diff, Color.red, 1.0f);
+                        }
 
+                    }
                 }
             }
 #endif
-
-            //rotHorizontal = Input.GetAxisRaw("Mouse X");
-
-
-
-
             if (Input.GetKeyDown(KeyCode.I))
             {
                 photonView.RPC("ChatMessage", PhotonTargets.All, photonView.owner.NickName, "I Message you");

@@ -229,10 +229,11 @@ MonoBehaviour:
   mobileAxisRT: {fileID: 0}
   mobileRT: {fileID: 0}
   isSliderControls: 0
-  isAccelControls: 1
-  AccelSensitivity: 2
+  AccelSensitivity: 1
   throttleSlider: {fileID: 0}
   steeringSlider: {fileID: 0}
+  pauseInput: 0
+  isDragCamera: 0
 --- !u!114 &5268632159674632707
 MonoBehaviour:
   m_ObjectHideFlags: 0

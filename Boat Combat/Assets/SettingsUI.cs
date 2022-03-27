@@ -28,10 +28,7 @@ namespace Com.BowenIvanov.BoatCombat
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-#if !(UNITY_ANDROID || UNITY_IOS)
-                settingUI.SetActive(!settingUI.activeSelf);
-                Cursor.visible = settingUI.activeSelf;
-#endif
+                setSettingsActive(!settingUI.activeSelf);
 
             }
         }
@@ -57,6 +54,13 @@ namespace Com.BowenIvanov.BoatCombat
 
             yield return new WaitForSecondsRealtime(5f);
             GameManager.self.leaveRoom();
+        }
+
+        public void setSettingsActive(bool active)
+        {
+            PlayerManager.LocalPlayerInstance.GetComponent<PlayerManager>().setPausedInput(active);
+            settingUI.SetActive(active);
+            Cursor.visible = settingUI.activeSelf;
         }
     }
 }
