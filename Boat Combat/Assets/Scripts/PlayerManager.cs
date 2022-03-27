@@ -173,9 +173,24 @@ namespace Com.BowenIvanov.BoatCombat
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.other.gameObject.tag == "Projectile")
+            if (collision.other.gameObject.tag == "Projectile")//damage taken
             {
-                takeDamage(10);
+                if (collision.other.gameObject.name == "fastProjectile")//speedboat
+                {
+                    takeDamage(5);
+                }
+                if (collision.other.gameObject.name == "testProjectile")//normal
+                {
+                    takeDamage(10);
+                }
+                if (collision.other.gameObject.name == "cannonProjectile")//kayak
+                {
+                    takeDamage(20);
+                }
+                else
+                {
+                    takeDamage(10);//default
+                }
             }
         }
 

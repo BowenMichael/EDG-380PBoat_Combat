@@ -42,7 +42,7 @@ namespace Com.BowenIvanov.BoatCombat
         // Start is called before the first frame update
         void Awake()
         {
-            currentProjectile = "testProjectile";//default
+            //currentProjectile = "testProjectile";//default
 
         }
 
