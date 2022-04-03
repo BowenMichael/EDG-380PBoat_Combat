@@ -7,6 +7,7 @@ using TMPro;
 
 namespace Com.BowenIvanov.BoatCombat
 {
+
     public class SettingsUI : MonoBehaviour
     {
         public GameObject settingUI;
@@ -21,6 +22,7 @@ namespace Com.BowenIvanov.BoatCombat
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
 #endif
+
         }
 
         // Update is called once per frame

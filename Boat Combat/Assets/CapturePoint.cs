@@ -7,6 +7,7 @@ using Photon.Realtime;
 
 namespace Com.BowenIvanov.BoatCombat
 {
+    [RequireComponent(typeof(MeshRenderer))]
     public class CapturePoint : Photon.MonoBehaviour, IPunObservable
     {
         [Tooltip("0: Neutral")]
@@ -22,6 +23,9 @@ namespace Com.BowenIvanov.BoatCombat
         int teamContesting = 0;
 
         float timer = 0;
+
+        MeshRenderer mr;
+        Material mat;
 
         [SerializeField] Slider healthBar;
 
@@ -48,6 +52,9 @@ namespace Com.BowenIvanov.BoatCombat
             //updateHealthPerSecond;
             healthBar.maxValue = maxHealth;
             healthBar.minValue = 0;
+
+            mr = GetComponent<MeshRenderer>();
+            mat = mr.material;
         }
 
         // Update is called once per frame
@@ -104,7 +111,9 @@ namespace Com.BowenIvanov.BoatCombat
         void updateUI()
         {
             healthBar.value = health;
-            healthBar.gameObject.GetComponent<SliderController>().setColors(teamControlling, (float)health / maxHealth);
+            Color color = healthBar.gameObject.GetComponent<SliderController>().setColors(teamControlling, (float)health / maxHealth);
+            mat.color = new Color(color.r, color.g, color.b, mat.color.a);
+
         }
 
         public bool isControllingAtMaxHealth()

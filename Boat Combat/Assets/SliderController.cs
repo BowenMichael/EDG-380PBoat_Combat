@@ -21,7 +21,7 @@ namespace Com.BowenIvanov.BoatCombat
             
         }
 
-        public void setColors(float teamControlling, float evaluationInput)
+        public Color setColors(float teamControlling, float evaluationInput)
         {
             if(localTeam == 0)
             {
@@ -39,12 +39,16 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 healthBar.fillRect.GetComponent<Image>().color = enemyTeam.Evaluate(evaluationInput);
                 //Debug.Log("other");
+                return enemyTeam.Evaluate(evaluationInput);
             }
             else if (teamControlling == localTeam)
             {
                 healthBar.fillRect.GetComponent<Image>().color = myTeam.Evaluate(evaluationInput);
                 //Debug.Log("local");
+                return myTeam.Evaluate(evaluationInput);
             }
+            return Color.white;
+            
         }
     }
 }

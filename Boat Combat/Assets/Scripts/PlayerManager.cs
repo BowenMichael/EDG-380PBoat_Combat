@@ -47,7 +47,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         [SerializeField] private GameObject healthBarPrefab;
         private Transform canvasTransform;
-        private Slider healthSlider;
+        [SerializeField] Slider healthSlider;
         [SerializeField] private float maxHealth = 100f;
         private float currentHealth;
 
@@ -147,11 +147,11 @@ namespace Com.BowenIvanov.BoatCombat
             }
 
             //Instantiate Healthbar
-            canvasTransform = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Transform>();
-            GameObject healthTmp = Instantiate(healthBarPrefab, canvasTransform);
-            healthTmp.transform.SetAsFirstSibling();
-            healthTmp.GetComponent<HealthBarScript>().setPlayer(this.gameObject);
-            healthSlider = healthTmp.GetComponent<Slider>();
+            //canvasTransform = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Transform>();
+            //GameObject healthTmp = Instantiate(healthBarPrefab, canvasTransform);
+            //healthTmp.transform.SetAsFirstSibling();
+            //healthTmp.GetComponent<HealthBarScript>().setPlayer(this.gameObject);
+            //healthSlider = healthTmp.GetComponent<Slider>();
 
             //set current health to max health
             currentHealth = maxHealth;
