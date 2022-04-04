@@ -10,6 +10,8 @@ namespace Com.BowenIvanov.BoatCombat
 {
     public class PowerUpScript : Photon.MonoBehaviour
     {
+        [SerializeField]private ParticleSystem part;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -32,6 +34,10 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 //change speed
                 collision.gameObject.GetComponent<PlayerManager>().SpeedPowerUp();
+                part.transform.position = transform.position;
+                part.Play();
+                //Destroy(gameObject, part.main.duration);
+
                 PhotonNetwork.Destroy(gameObject);
 
                 //return;
