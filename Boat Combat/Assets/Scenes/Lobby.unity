@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -313,6 +313,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boat1
       objectReference: {fileID: 0}
+    - target: {fileID: 3877247629805978922, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5008256347506235867, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: viewIdField
       value: 1
@@ -325,8 +329,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7034845280989442142, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7808871593006261825, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268173199179274881, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1190,6 +1202,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2988382101340552600, guid: f68673510f1f3f949b77c2e339016b28, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3198323778949504750, guid: f68673510f1f3f949b77c2e339016b28, type: 3}
       propertyPath: m_Name
       value: Boat3
@@ -1254,8 +1270,16 @@ PrefabInstance:
       propertyPath: instantiationId
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7928708273559708211, guid: f68673510f1f3f949b77c2e339016b28, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8135949308949208819, guid: f68673510f1f3f949b77c2e339016b28, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013628235131586796, guid: f68673510f1f3f949b77c2e339016b28, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1652,12 +1676,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boat2
       objectReference: {fileID: 0}
+    - target: {fileID: 1708629670403722177, guid: c16f85340531fa542a5a28e45bde5460, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3312883582644529719, guid: c16f85340531fa542a5a28e45bde5460, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4888744318851989173, guid: c16f85340531fa542a5a28e45bde5460, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5631235506710915242, guid: c16f85340531fa542a5a28e45bde5460, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5820610303358440554, guid: c16f85340531fa542a5a28e45bde5460, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7491846901925451568, guid: c16f85340531fa542a5a28e45bde5460, type: 3}
