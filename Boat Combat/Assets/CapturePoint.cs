@@ -26,6 +26,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         MeshRenderer mr;
         Material mat;
+        Image img;
 
         [SerializeField] Slider healthBar;
 
@@ -54,6 +55,7 @@ namespace Com.BowenIvanov.BoatCombat
             healthBar.minValue = 0;
 
             mr = GetComponent<MeshRenderer>();
+            img = GetComponentInChildren<Image>();
             mat = mr.material;
         }
 
@@ -113,6 +115,7 @@ namespace Com.BowenIvanov.BoatCombat
             healthBar.value = health;
             Color color = healthBar.gameObject.GetComponent<SliderController>().setColors(teamControlling, (float)health / maxHealth);
             mat.color = new Color(color.r, color.g, color.b, mat.color.a);
+            img.color = color;
 
         }
 

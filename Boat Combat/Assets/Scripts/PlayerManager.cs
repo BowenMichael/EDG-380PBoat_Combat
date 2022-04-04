@@ -38,8 +38,8 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] private float projectilesSpreadAngle;
 
 
-        private float horizontal;
-        private float vertical;
+        [SerializeField] float horizontal;
+        [SerializeField] float vertical;
         private int playerLookAtIndex = 0; //The index of the player being looked at by the local client
 
 
@@ -131,7 +131,7 @@ namespace Com.BowenIvanov.BoatCombat
                 cvCam.Follow = transform;
                 cvCam.LookAt = transform;
                 rb = GetComponent<Rigidbody>();
-                toggleCameraLookAt();
+                //toggleCameraLookAt();
 #if !(UNITY_ANDROID || UNITY_IOS)
                 cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.m_InputAxisName = "Mouse X";
 #endif
@@ -354,7 +354,10 @@ namespace Com.BowenIvanov.BoatCombat
         void ProcessMovement()
         {
             Vector3 direction = new Vector3(vertical, 0.0f, 0.0f);
-            rb.AddForce(transform.localToWorldMatrix * (direction * speed * Time.fixedDeltaTime));
+            Vector3 force = transform.localToWorldMatrix * (direction * speed * Time.fixedDeltaTime);
+            rb.AddForce(force);
+            Debug.Log(force);
+           
 
             Vector3 rotation = new Vector3(0.0f, horizontal, 0.0f);
             gameObject.transform.Rotate(rotSpeed * rotation * Time.fixedDeltaTime);

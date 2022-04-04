@@ -78,8 +78,6 @@ namespace Com.BowenIvanov.BoatCombat
 
         #region Custom
 
-       
-
         public void changeProjectile(string projectileName)
         {
             if(projectileName == null)
@@ -104,19 +102,8 @@ namespace Com.BowenIvanov.BoatCombat
 
             if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Mouse0))
             {
-                if (isReloading)
-                    return;
-
-                if(Time.time - lastFired > 1 / fireRate)
-                {
-                    lastFired = Time.time;
-                    fireProjectile();
-                    currentAmmo--;
-                    if(currentAmmo <= 0)
-                    {
-                        StartCoroutine(reloadWeapon());
-                    }
-                }
+                fireProjectile();
+                
                 //chargeShot();
             }
 
@@ -146,11 +133,12 @@ namespace Com.BowenIvanov.BoatCombat
                     }
                     else if (ts[i].phase == TouchPhase.Stationary || ts[i].phase == TouchPhase.Moved)
                     {
-                        chargeShot();
+                        //chargeShot();
+                        fireProjectile();
                     }
                     else if (ts[i].phase == TouchPhase.Ended)
                     {
-                        fireProjectile();
+                        //fireProjectile();
                     }
                     i = ts.Length;
                     break;
@@ -171,40 +159,56 @@ namespace Com.BowenIvanov.BoatCombat
 
         void fireProjectile()
         {
-            Vector3 boatPosition = gameObject.transform.position;
-            Quaternion boatRotation = gameObject.transform.rotation;
-            //GameObject proj = GameObject.Instantiate(testProjectile);
-            //using PhotonNetwork.Instantiate the created game object is set up for the network
-            for (int i = 0; i < numProjectiles; i++)
+            if (isReloading)
+                return;
+
+            if (Time.time - lastFired > 1 / fireRate) //check fire rate
             {
-                float angleModifier = (i / numProjectiles) * 2f -1f;
-                //angleModifier *= projectilesSpreadAngle;
-                GameObject proj = null;
-                if (PhotonNetwork.inRoom)
+                lastFired = Time.time;
+
+                Vector3 boatPosition = gameObject.transform.position;
+                Quaternion boatRotation = gameObject.transform.rotation;
+                //GameObject proj = GameObject.Instantiate(testProjectile);
+                //using PhotonNetwork.Instantiate the created game object is set up for the network
+                for (int i = 0; i < numProjectiles; i++)
                 {
-                    proj = PhotonNetwork.Instantiate(currentProjectile, boatPosition, boatRotation, 0);
+                    float angleModifier = (i / numProjectiles) * 2f - 1f;
+                    //angleModifier *= projectilesSpreadAngle;
+                    GameObject proj = null;
+                    if (PhotonNetwork.inRoom)
+                    {
+                        proj = PhotonNetwork.Instantiate(currentProjectile, boatPosition, boatRotation, 0);
+                    }
+
+                    if (proj == null)
+                    {
+                        return;
+                    }
+                    Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
+                    proj.transform.position = weaponBarrel.transform.position;//new Vector3(boatPosition.x , boatPosition.y, boatPosition.z);
+
+                    proj.transform.forward = weaponBarrel.transform.right;// new Vector3(-cameraDirection.x, 0f, -cameraDirection.z);
+
+                    //proj.transform.position += (proj.transform.forward * 10);
+
+
+
+                    Vector3 front = gameObject.transform.right;
+
+                    //Vector3 projectileDirection = new Vector3(-cameraDirection.x, 0f, -cameraDirection.z).normalized;
+                    Vector3 projectileDirection = new Vector3(proj.transform.forward.x, 0f, proj.transform.forward.z);
+                    proj.transform.rotation = new Quaternion(boatRotation.x + 90f, boatRotation.y - 90f, boatRotation.z, boatRotation.w);
+                    proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed + 1000) * Time.fixedDeltaTime);
                 }
 
-                if (proj == null)
+                currentAmmo--;
+                if (currentAmmo <= 0)
                 {
-                    return;
+                    StartCoroutine(reloadWeapon());
                 }
-                Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
-                proj.transform.position = weaponBarrel.transform.position;//new Vector3(boatPosition.x , boatPosition.y, boatPosition.z);
-
-                proj.transform.forward = weaponBarrel.transform.right;// new Vector3(-cameraDirection.x, 0f, -cameraDirection.z);
-
-                //proj.transform.position += (proj.transform.forward * 10);
-
-
-
-                Vector3 front = gameObject.transform.right;
-
-                //Vector3 projectileDirection = new Vector3(-cameraDirection.x, 0f, -cameraDirection.z).normalized;
-                Vector3 projectileDirection = new Vector3 (proj.transform.forward.x, 0f, proj.transform.forward.z);
-                proj.transform.rotation = new Quaternion(boatRotation.x + 90f, boatRotation.y -90f, boatRotation.z, boatRotation.w);
-                proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed + 1000) * Time.fixedDeltaTime);
             }
+
+            
         }
 
         IEnumerator reloadWeapon()

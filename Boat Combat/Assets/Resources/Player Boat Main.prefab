@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 2456413125340564201}
   - component: {fileID: 7808871593006261825}
   m_Layer: 0
-  m_Name: Player Main
+  m_Name: Player Boat Main
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,8 +199,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.8263674, y: 2.0383973, z: 2.1449533}
-  m_Center: {x: -0.15497828, y: 1.0491982, z: 0}
+  m_Size: {x: 5.8263674, y: 1.0269034, z: 2.1449533}
+  m_Center: {x: -0.15497828, y: 1.5549451, z: 0}
 --- !u!114 &1117244123021370588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +223,8 @@ MonoBehaviour:
   projSpeed: 0
   numProjectiles: 5
   projectilesSpreadAngle: 7.94
+  horizontal: 0
+  vertical: 0
   healthBarPrefab: {fileID: 8273305809662755210, guid: 5b7c62b17b975134abe800810b080935, type: 3}
   healthSlider: {fileID: 3617140271433313497}
   maxHealth: 100
@@ -674,6 +676,10 @@ PrefabInstance:
       value: Scout_Boat
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9b7cc2e501ae9c546b416e06ed63191b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9b7cc2e501ae9c546b416e06ed63191b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -691,6 +697,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4682380644907018350}
     m_Modifications:
+    - target: {fileID: 2418984533542529534, guid: 5b7c62b17b975134abe800810b080935, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4443895497327131770, guid: 5b7c62b17b975134abe800810b080935, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -773,7 +783,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4443895497327131770, guid: 5b7c62b17b975134abe800810b080935, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.17
+      value: -1.53
       objectReference: {fileID: 0}
     - target: {fileID: 4443895497327131770, guid: 5b7c62b17b975134abe800810b080935, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -786,6 +796,14 @@ PrefabInstance:
     - target: {fileID: 4443895497327131770, guid: 5b7c62b17b975134abe800810b080935, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4589404878862793236, guid: 5b7c62b17b975134abe800810b080935, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700849535268742919, guid: 5b7c62b17b975134abe800810b080935, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6999316047273846867, guid: 5b7c62b17b975134abe800810b080935, type: 3}
       propertyPath: m_AnchorMax.y
@@ -822,6 +840,10 @@ PrefabInstance:
     - target: {fileID: 8273305809662755210, guid: 5b7c62b17b975134abe800810b080935, type: 3}
       propertyPath: m_Name
       value: Healthbar
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273305809662755210, guid: 5b7c62b17b975134abe800810b080935, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b7c62b17b975134abe800810b080935, type: 3}
