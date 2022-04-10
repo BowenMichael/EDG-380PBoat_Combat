@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 
 namespace Com.BowenIvanov.BoatCombat
@@ -36,6 +37,14 @@ namespace Com.BowenIvanov.BoatCombat
 
         PlayerManager plm;
         RectTransform mobileFireRT;
+        private PlayerStatsTrackerManager pstm;
+
+        #endregion
+
+        #region Unity Events
+
+        public UnityEvent onDamage;
+        public UnityEvent onKill;
 
         #endregion
 
@@ -50,6 +59,7 @@ namespace Com.BowenIvanov.BoatCombat
         private void Start()
         {
             plm = GetComponent<PlayerManager>();
+            pstm = GetComponent<PlayerStatsTrackerManager>();
             mobileFireRT = plm.getFireRT();
 
             lastFired = Time.time;
@@ -178,6 +188,11 @@ namespace Com.BowenIvanov.BoatCombat
                     if (PhotonNetwork.inRoom)
                     {
                         proj = PhotonNetwork.Instantiate(currentProjectile, boatPosition, boatRotation, 0);
+                        if(proj.TryGetComponent(out testProjectileScript tps))
+                        {
+                            tps.onDamage.AddListener(pstm.onDamage);
+                            tps.onKill.AddListener(pstm.onKill);
+                        }
                     }
 
                     if (proj == null)

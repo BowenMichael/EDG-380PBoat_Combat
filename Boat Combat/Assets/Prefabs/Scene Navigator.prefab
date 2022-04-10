@@ -43,4 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8bbef0be167bbe4889dffa3d434adad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launcherScene: Lobby
+  launcherScene: Lobby1v1

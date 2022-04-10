@@ -5,10 +5,11 @@ using Cinemachine;
 using Photon;
 using Photon.Realtime;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 namespace Com.BowenIvanov.BoatCombat
 {
-    public class PlayerManager : PunBehaviour, IPunObservable//(for sending specific data)
+    public class PlayerManager : PunBehaviour//(for sending specific data)
     {
         #region Public Variables
 
@@ -27,67 +28,57 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField]
         private CinemachineVirtualCamera cvCam;
 
-        private Rigidbody rb;
 
+        [Header("Attributes")]
         [SerializeField] private float speed;
         [SerializeField] private float rotSpeed;
-        [SerializeField] private float sensitivity;
-        [SerializeField] private int team;
-        [SerializeField] private float projSpeed;
-        [SerializeField] private float numProjectiles;
-        [SerializeField] private float projectilesSpreadAngle;
 
 
-        [SerializeField] float horizontal;
-        [SerializeField] float vertical;
-        private int playerLookAtIndex = 0; //The index of the player being looked at by the local client
-
-
-        private float rotHorizontal;
-
-        [SerializeField] private GameObject healthBarPrefab;
-        private Transform canvasTransform;
-        [SerializeField] Slider healthSlider;
-        [SerializeField] private float maxHealth = 100f;
-        private float currentHealth;
-
-        private Transform spawnPoint;
-
-        [SerializeField] private FixedJoystick mobileAxis;
-        [SerializeField] private float mobileLookSpeed = 5f;
-        [SerializeField] RectTransform mobileAxisRT;
-        [SerializeField] RectTransform mobileRT;
+        [Header("Settings")]
         [SerializeField] bool isSliderControls;
         [SerializeField] float VertAccelSensitivity = 1.5f;
         [SerializeField] float HortAccelSensitivity = 1.5f;
         [SerializeField] float MaxAccelSensitivity = 5.0f;
+
+        [Header("Mobile UI")]
+        [SerializeField] private FixedJoystick mobileAxis;
+        [SerializeField] private float mobileLookSpeed = 5f;
+        [SerializeField] RectTransform mobileAxisRT;
+        [SerializeField] RectTransform mobileRT;
         [SerializeField] Slider throttleSlider;
         [SerializeField] Slider steeringSlider;
+
+        [Header("Readable info")]
+        [SerializeField] private int team;
+        [SerializeField] float horizontal;
+        [SerializeField] float vertical;
+        [SerializeField] private GameObject healthBarPrefab;
+
+
+
+
 
         [Header("Options")]
         [SerializeField] bool pauseInput;
         [SerializeField] bool isDragCamera;
 
+        //Personal attached
+        private Rigidbody rb;
+        private HealthManager health;
 
+
+        private Transform canvasTransform;
         private MobileManager mobileManager;
-
+        private Transform spawnPoint;
+        private int playerLookAtIndex = 0; //The index of the player being looked at by the local client
+        private float rotHorizontal;
         Vector2 initalTouchPoint;
 
         #endregion
 
         #region Photon Callbacks
 
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-            if (stream.isWriting)
-            {
-                stream.SendNext(currentHealth);
-            }
-            else
-            {
-                currentHealth = (float)stream.ReceiveNext();
-            }
-        }
+
 
         public override void OnPhotonInstantiate(PhotonMessageInfo info)
         {
@@ -108,7 +99,7 @@ namespace Com.BowenIvanov.BoatCombat
             }
             // #Critical
             // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
 
         private void Start()
@@ -125,12 +116,15 @@ namespace Com.BowenIvanov.BoatCombat
                 
                 if (cvCam == null)
                 {
-                    GameObject tmp = Instantiate(cameraPrefab);
-                    cvCam = tmp.GetComponent<CinemachineVirtualCamera>();
+                    //GameObject tmp = Instantiate(cameraPrefab);
+                    cvCam = FindObjectOfType<CinemachineVirtualCamera>();//tmp.GetComponent<CinemachineVirtualCamera>();
                 }
                 cvCam.Follow = transform;
                 cvCam.LookAt = transform;
                 rb = GetComponent<Rigidbody>();
+                health = GetComponent<HealthManager>();
+                
+
                 //toggleCameraLookAt();
 #if !(UNITY_ANDROID || UNITY_IOS)
                 cvCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.m_InputAxisName = "Mouse X";
@@ -146,15 +140,9 @@ namespace Com.BowenIvanov.BoatCombat
 #endif
             }
 
-            //Instantiate Healthbar
-            //canvasTransform = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Transform>();
-            //GameObject healthTmp = Instantiate(healthBarPrefab, canvasTransform);
-            //healthTmp.transform.SetAsFirstSibling();
-            //healthTmp.GetComponent<HealthBarScript>().setPlayer(this.gameObject);
-            //healthSlider = healthTmp.GetComponent<Slider>();
 
-            //set current health to max health
-            currentHealth = maxHealth;
+
+
 
         }
 
@@ -163,7 +151,6 @@ namespace Com.BowenIvanov.BoatCombat
             if (photonView.isMine)
             {
                 ProcessInput();
-                checkHealth();
             }
 
             
@@ -176,32 +163,30 @@ namespace Com.BowenIvanov.BoatCombat
                 ProcessMovement();
                 ProcessCameraMovement();
             }
-            //need to make this part of the photon view eventually
-            //this updates the visual healthbar
-            healthSlider.value = currentHealth / maxHealth;
+
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.other.gameObject.tag == "Projectile")//damage taken
-            {
-                if (collision.other.gameObject.name == "fastProjectile")//speedboat
-                {
-                    takeDamage(5);
-                }
-                if (collision.other.gameObject.name == "testProjectile")//normal
-                {
-                    takeDamage(10);
-                }
-                if (collision.other.gameObject.name == "cannonProjectile")//kayak
-                {
-                    takeDamage(20);
-                }
-                else
-                {
-                    takeDamage(10);//default
-                }
-            }
+            //if (collision.other.gameObject.tag == "Projectile")//damage taken
+            //{
+            //    if (collision.other.gameObject.name == "fastProjectile")//speedboat
+            //    {
+            //        takeDamage(5);
+            //    }
+            //    if (collision.other.gameObject.name == "testProjectile")//normal
+            //    {
+            //        takeDamage(10);
+            //    }
+            //    if (collision.other.gameObject.name == "cannonProjectile")//kayak
+            //    {
+            //        takeDamage(20);
+            //    }
+            //    else
+            //    {
+            //        takeDamage(10);//default
+            //    }
+            //}
         }
 
 #endregion
@@ -211,8 +196,6 @@ namespace Com.BowenIvanov.BoatCombat
             #region Acessors
 
         public int getTeam() { return team; }
-
-        public float getProjSpeed() { return projSpeed; }
 
         public RectTransform getFireRT()
         {
@@ -356,7 +339,7 @@ namespace Com.BowenIvanov.BoatCombat
             Vector3 direction = new Vector3(vertical, 0.0f, 0.0f);
             Vector3 force = transform.localToWorldMatrix * (direction * speed * Time.fixedDeltaTime);
             rb.AddForce(force);
-            Debug.Log(force);
+            //Debug.Log(force);
            
 
             Vector3 rotation = new Vector3(0.0f, horizontal, 0.0f);
@@ -373,17 +356,6 @@ namespace Com.BowenIvanov.BoatCombat
             //Quaternion rotation = new Quaternion(0f, 30f, 0f, 0f);
             //cvCam.transform.rotation = rotation;
         }
-
-        void resetShot()
-        {
-            projSpeed = 10000;
-        }
-
-        void chargeShot()
-        {
-            projSpeed = (projSpeed + 150);
-        }
-
 
         void toggleCameraLookAt()
         {
@@ -423,45 +395,6 @@ namespace Com.BowenIvanov.BoatCombat
             }
         }
 
-        void fireProjectile()
-        {
-            Vector3 boatPosition = gameObject.transform.position;
-            Quaternion boatRotation = gameObject.transform.rotation;
-            //GameObject proj = GameObject.Instantiate(testProjectile);
-            //using PhotonNetwork.Instantiate the created game object is set up for the network
-            for (int i = 0; i < numProjectiles; i++)
-            {
-                float angleModifier = (i / numProjectiles) * 2f -1f;
-                //angleModifier *= projectilesSpreadAngle;
-                GameObject proj = null;
-                if (PhotonNetwork.inRoom)
-                {
-                    proj = PhotonNetwork.Instantiate("testProjectile", boatPosition, boatRotation, 0);
-                }
-
-                if (proj == null)
-                {
-                    return;
-                }
-                Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
-                proj.transform.forward = cameraDirection;
-                proj.transform.position = new Vector3(boatPosition.x + angleModifier * numProjectiles * -cameraDirection.z, boatPosition.y + 4f, boatPosition.z + angleModifier * numProjectiles * cameraDirection.x);
-                
-
-                Vector3 front = gameObject.transform.right;
-                
-                Vector3 projectileDirection = new Vector3(-cameraDirection.x, cameraDirection.y, -cameraDirection.z).normalized;
-                
-                proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed) * Time.fixedDeltaTime);
-            }
-        }
-
-        private void ProcessDeath()
-        {
-            respawn();
-            currentHealth = maxHealth;
-        }
-
         void setSpawnPoint()
         {
             Debug.Log("Setting spawn " + photonView.owner);
@@ -469,7 +402,7 @@ namespace Com.BowenIvanov.BoatCombat
             respawn();
         }
 
-        void respawn()
+        public void respawn()
         {
             Debug.Log("Respawning " + photonView.owner);
             photonView.RPC("sendSpawnPoint", PhotonTargets.All, new float[] { spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z },
@@ -496,18 +429,9 @@ namespace Com.BowenIvanov.BoatCombat
         }
 
 
-        void checkHealth()
-        {
-            if (currentHealth <= 0)
-            {
-                photonView.RPC("onDeath", PhotonTargets.All);
-            }
-        }
 
-        public void takeDamage(int value)
-        {
-            currentHealth -= value;
-        }
+
+
 
 #endregion
 
@@ -525,7 +449,7 @@ namespace Com.BowenIvanov.BoatCombat
             //SetSpawnPoint
             setSpawnPoint();
 
-            GameManager.self.StartCountDown();
+
         }
 
 
@@ -552,12 +476,6 @@ namespace Com.BowenIvanov.BoatCombat
         void sendTeam(int t)
         {
             team = t;
-        }
-
-        [PunRPC]
-        void onDeath()
-        {
-            ProcessDeath();
         }
 
         [PunRPC]

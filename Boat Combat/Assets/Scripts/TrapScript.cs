@@ -30,7 +30,7 @@ namespace Com.BowenIvanov.BoatCombat
             //}
             if (collision.gameObject.tag == "Player")
             {
-                collision.gameObject.GetComponent<PlayerManager>().takeDamage(25);
+                collision.gameObject.GetComponent<HealthManager>().takeDamage(25);
                 PhotonNetwork.Destroy(gameObject);
 
                 if (photonView.isMine)

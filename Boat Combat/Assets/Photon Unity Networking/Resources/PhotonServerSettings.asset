@@ -48,4 +48,7 @@ MonoBehaviour:
   - setPosition
   - sendTimer
   - endGameByMatchTime
+  - initLocalPlayer
+  - start
+  - processDeath
   DisableAutoOpenWizard: 1
