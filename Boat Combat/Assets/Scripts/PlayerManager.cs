@@ -5,6 +5,9 @@ using Cinemachine;
 using Photon;
 using Photon.Realtime;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+
 
 namespace Com.BowenIvanov.BoatCombat
 {
@@ -72,6 +75,10 @@ namespace Com.BowenIvanov.BoatCombat
         private MobileManager mobileManager;
 
         Vector2 initalTouchPoint;
+
+        //post processing
+        private Volume volume;
+        private Vignette vignette;
 
         #endregion
 
@@ -156,6 +163,12 @@ namespace Com.BowenIvanov.BoatCombat
             //set current health to max health
             currentHealth = maxHealth;
 
+            //setup postprocessing
+            volume = FindObjectOfType<Volume>();
+            if(volume.profile.TryGet<Vignette>(out vignette))
+            {
+                vignette.intensity.value = 0.0f;
+            }
         }
 
         private void Update()
@@ -504,9 +517,28 @@ namespace Com.BowenIvanov.BoatCombat
         public void takeDamage(int value)
         {
             currentHealth -= value;
+            StartCoroutine(DamageVignette());
         }
 
-#endregion
+        IEnumerator DamageVignette()
+        {
+            vignette.intensity.value = 0.3f;
+            yield return new WaitForSeconds(2);
+            float t = 0f;
+            while (t <= 1.0)
+            {
+                t += Time.deltaTime / 100f;
+                vignette.intensity.value = Mathf.Lerp(0.3f, 0.0f, Mathf.SmoothStep(0f, 1f, t));
+
+                //yield return null;
+            }
+
+
+            //vignette.intensity.value = 0.0f;
+
+        }
+
+        #endregion
 
         #region Custom RPC
 

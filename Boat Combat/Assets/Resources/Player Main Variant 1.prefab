@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: -4378400966750996550, guid: 68a020305c237254693950ecc1f0ce5b, type: 3}
     - target: {fileID: 1117244123021370588, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: speed
-      value: 700
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 1117244123021370588, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: rotSpeed
@@ -77,7 +77,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5268632159674632707, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: speed
-      value: 700
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 5268632159674632707, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: maxAmmo
