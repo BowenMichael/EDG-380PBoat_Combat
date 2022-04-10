@@ -93,11 +93,6 @@ Library: lib_burst_generated
 --compilation-defines=UNITY_UNITYADS_API
 --compilation-defines=ENABLE_MONO
 --compilation-defines=NET_STANDARD_2_0
---compilation-defines=DEVELOPMENT_BUILD
---compilation-defines=ENABLE_PROFILER
---compilation-defines=DEBUG
---compilation-defines=TRACE
---compilation-defines=UNITY_ASSERTIONS
 --compilation-defines=ENABLE_CUSTOM_RENDER_TEXTURE
 --compilation-defines=ENABLE_DIRECTOR
 --compilation-defines=ENABLE_LOCALIZATION
@@ -124,7 +119,6 @@ Library: lib_burst_generated
 --compilation-defines=CINEMACHINE_LWRP_7_0_0
 --compilation-defines=CINEMACHINE_LWRP_7_1_3
 --generate-link-xml=Temp\burst.link.xml
---debug=Full
 --output=D:\~School\~SP22\EDG-380p\Project\Boat Combat\Temp\StagingArea\tempburstlibs\armeabi-v7a\lib_burst_generated
 --root-assembly=D:\~School\~SP22\EDG-380p\Project\Boat Combat\Temp\StagingArea\Data\Managed\UnityEngine.UI.dll
 --root-assembly=D:\~School\~SP22\EDG-380p\Project\Boat Combat\Temp\StagingArea\Data\Managed\Unity.Services.AnalyticsRuntime.dll

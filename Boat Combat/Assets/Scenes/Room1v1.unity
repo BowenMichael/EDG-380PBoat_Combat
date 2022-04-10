@@ -1139,6 +1139,7 @@ MonoBehaviour:
   secondsForMatch: 300
   matchTime: 0
   skipStart: 0
+  isFFA: 0
   cpm: {fileID: 0}
   plrs: []
   UI: {fileID: 699678021}
@@ -2378,6 +2379,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numOfTraps: 10
   numOfPowerUps: 10
+--- !u!1001 &1005731352
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1553192701770496705, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_Name
+      value: CM vcam1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.766288
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.2547243
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.76175576
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.17945401
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.6059279
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.14274415
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 22.517
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -122.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
 --- !u!224 &1033278654 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1726294701853775272, guid: 34f0c7b78022ee849944bdc20d6dc558, type: 3}
@@ -2461,8 +2519,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054634412}
-  m_LocalRotation: {x: 0.22268315, y: -0.23956838, z: 0.05655429, w: 0.9433031}
-  m_LocalPosition: {x: 153.3, y: 41.6, z: 221.7}
+  m_LocalRotation: {x: 0.17945401, y: 0.6059279, z: -0.14274415, w: 0.76175576}
+  m_LocalPosition: {x: -9.766288, y: 5, z: -2.2547243}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1434465428}
@@ -3292,26 +3350,20 @@ MonoBehaviour:
   cvCam: {fileID: 0}
   speed: 0
   rotSpeed: 0
-  sensitivity: 0
-  team: 0
-  projSpeed: 0
-  numProjectiles: 0
-  projectilesSpreadAngle: 0
-  horizontal: 0
-  vertical: 0
-  healthBarPrefab: {fileID: 0}
-  healthSlider: {fileID: 0}
-  maxHealth: 100
-  mobileAxis: {fileID: 0}
-  mobileLookSpeed: 5
-  mobileAxisRT: {fileID: 0}
-  mobileRT: {fileID: 0}
   isSliderControls: 0
   VertAccelSensitivity: 1.5
   HortAccelSensitivity: 1.5
   MaxAccelSensitivity: 5
+  mobileAxis: {fileID: 0}
+  mobileLookSpeed: 5
+  mobileAxisRT: {fileID: 0}
+  mobileRT: {fileID: 0}
   throttleSlider: {fileID: 0}
   steeringSlider: {fileID: 0}
+  team: 0
+  horizontal: 0
+  vertical: 0
+  healthBarPrefab: {fileID: 0}
   pauseInput: 0
   isDragCamera: 0
 --- !u!4 &1459980782
