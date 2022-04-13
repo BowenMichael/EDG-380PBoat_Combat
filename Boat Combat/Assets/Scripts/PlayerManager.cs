@@ -6,6 +6,9 @@ using Photon;
 using Photon.Realtime;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+
 
 namespace Com.BowenIvanov.BoatCombat
 {
@@ -73,6 +76,10 @@ namespace Com.BowenIvanov.BoatCombat
         private int playerLookAtIndex = 0; //The index of the player being looked at by the local client
         private float rotHorizontal;
         Vector2 initalTouchPoint;
+
+        //post processing
+        private Volume volume;
+        private Vignette vignette;
 
         #endregion
 
@@ -144,6 +151,12 @@ namespace Com.BowenIvanov.BoatCombat
 
 
 
+            //setup postprocessing
+            volume = FindObjectOfType<Volume>();
+            if(volume.profile.TryGet<Vignette>(out vignette))
+            {
+                vignette.intensity.value = 0.0f;
+            }
         }
 
         private void Update()
@@ -429,11 +442,39 @@ namespace Com.BowenIvanov.BoatCombat
         }
 
 
+        void checkHealth()
+        {
+            if (currentHealth <= 0)
+            {
+                photonView.RPC("onDeath", PhotonTargets.All);
+            }
+        }
+
+        public void takeDamage(int value)
+        {
+            currentHealth -= value;
+            StartCoroutine(DamageVignette());
+        }
+
+        IEnumerator DamageVignette()
+        {
+            vignette.intensity.value = 0.3f;
+            yield return new WaitForSeconds(2);
+            float t = 0f;
+            while (t <= 1.0)
+            {
+                t += Time.deltaTime / 100f;
+                vignette.intensity.value = Mathf.Lerp(0.3f, 0.0f, Mathf.SmoothStep(0f, 1f, t));
+
+                //yield return null;
+            }
 
 
+            //vignette.intensity.value = 0.0f;
 
+        }
 
-#endregion
+        #endregion
 
         #region Custom RPC
 
