@@ -16,6 +16,7 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] Slider healthSlider;
 
         public UnityEvent onDeath;
+        public UnityEvent<float> onDamaged;
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
@@ -33,6 +34,7 @@ namespace Com.BowenIvanov.BoatCombat
         void Start()
         {
             onDeath.AddListener(GetComponent<PlayerManager>().respawn);
+            onDamaged.AddListener(GetComponent<PlayerManager>().onDamaged);
             //set current health to max health
             currentHealth = maxHealth;
 
@@ -73,8 +75,10 @@ namespace Com.BowenIvanov.BoatCombat
             return false;
         }
 
+        [PunRPC]
         public bool takeDamage(float value)
         {
+            onDamaged.Invoke(value);
             currentHealth -= value;
             return checkHealth();
         }

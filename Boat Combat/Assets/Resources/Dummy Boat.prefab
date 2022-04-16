@@ -448,6 +448,9 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  onDamaged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7034845280989442142
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
-  AppID: 34bef1fe-7c46-4dde-8ce9-22d7c73517ce
+  AppID: 
   VoiceAppID: 
   ChatAppID: 
-  HostType: 1
-  PreferredRegion: 1
+  HostType: 0
+  PreferredRegion: 0
   EnabledRegions: -1
   Protocol: 0
   ServerAddress: 
@@ -34,9 +34,10 @@ MonoBehaviour:
   - endGameByMatchTime
   - EndState
   - init
+  - initLocalPlayer
   - InstantiateRpc
-  - onDeath
   - PickupItemInit
+  - processDeath
   - PunPickup
   - PunPickupSimple
   - PunRespawn
@@ -46,9 +47,6 @@ MonoBehaviour:
   - sendTeam
   - sendTimer
   - setPosition
-  - sendTimer
-  - endGameByMatchTime
-  - initLocalPlayer
   - start
-  - processDeath
+  - takeDamage
   DisableAutoOpenWizard: 1

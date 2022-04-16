@@ -55,6 +55,8 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 if(other.TryGetComponent(out HealthManager health))
                 {
+                    //other.gameObject.GetPhotonView().RPC("takeDamage", PhotonTargets.Others, damage);
+                    
                     if (health.takeDamage(damage))
                     {
                         onKill.Invoke();

@@ -442,19 +442,11 @@ namespace Com.BowenIvanov.BoatCombat
         }
 
 
-        void checkHealth()
+        public void onDamaged(float value)
         {
-            if (currentHealth <= 0)
-            {
-                photonView.RPC("onDeath", PhotonTargets.All);
-            }
-        }
-
-        public void takeDamage(int value)
-        {
-            currentHealth -= value;
             StartCoroutine(DamageVignette());
         }
+
 
         IEnumerator DamageVignette()
         {
