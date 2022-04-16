@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 364112150620388734}
   - component: {fileID: 364112150620388735}
   - component: {fileID: 364112150620388732}
+  - component: {fileID: 4959810049543072598}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -99,7 +100,7 @@ MonoBehaviour:
   matchTime: 0
   skipStart: 0
   isFFA: 0
-  cpm: {fileID: 0}
+  cpm: {fileID: 4959810049543072598}
   plrs: []
   UI: {fileID: 0}
 --- !u!114 &364112150620388732
@@ -129,6 +130,26 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &4959810049543072598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364112150620388720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d28e0df89b110849b445e1f9ef3953c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamControlling: 0
+  maxHealth: 100
+  updateHealthPerSecond: 1
+  points:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  healthBar: {fileID: 0}
 --- !u!1 &364112150891065822
 GameObject:
   m_ObjectHideFlags: 0
