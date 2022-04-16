@@ -7,7 +7,7 @@ using Photon;
 
 namespace Com.BowenIvanov.BoatCombat
 {
-    public class HealthManager : PunBehaviour, IPunObservable
+    public class HealthManager : PunBehaviour
     {
         [SerializeField] bool isDummy = false;
         private float currentHealth;
@@ -18,17 +18,17 @@ namespace Com.BowenIvanov.BoatCombat
         public UnityEvent onDeath;
         public UnityEvent<float> onDamaged;
 
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-            if (stream.isWriting)
-            {
-                stream.SendNext(currentHealth);
-            }
-            else
-            {
-                currentHealth = (float)stream.ReceiveNext();
-            }
-        }
+        //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        //{
+        //    if (stream.isWriting)
+        //    {
+        //        stream.SendNext(currentHealth);
+        //    }
+        //    else
+        //    {
+        //        currentHealth = (float)stream.ReceiveNext();
+        //    }
+        //}
 
         // Start is called before the first frame update
         void Start()
@@ -81,6 +81,11 @@ namespace Com.BowenIvanov.BoatCombat
             onDamaged.Invoke(value);
             currentHealth -= value;
             return checkHealth();
+        }
+
+        public float getCurrentHealth()
+        {
+            return currentHealth;
         }
     }
 

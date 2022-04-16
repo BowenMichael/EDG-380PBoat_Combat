@@ -30,6 +30,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.001, y: 0.002, z: 0.001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5311260760130868733}
   m_Father: {fileID: 5449785628990081363}
@@ -124,6 +125,7 @@ GameObject:
   - component: {fileID: 1828845103152369613}
   - component: {fileID: 1369900605397172601}
   - component: {fileID: 2404708836769250419}
+  - component: {fileID: 1842884343700136358}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -141,6 +143,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5311260760130868733}
   m_RootOrder: 0
@@ -192,6 +195,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: A
+--- !u!114 &1842884343700136358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3343901850084999161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7566574e868048e4cbccc376c7e809ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obj: {fileID: 8200330787973664749}
+  isImage: 1
 --- !u!1 &5449785628990081454
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,7 +225,7 @@ GameObject:
   - component: {fileID: 5449785628990081364}
   m_Layer: 0
   m_Name: Capture Point
-  m_TagString: Untagged
+  m_TagString: CP
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -223,6 +240,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 104.1, y: 0, z: 451.9}
   m_LocalScale: {x: 60, y: 28.4, z: 60}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 829340782384526448}
   m_Father: {fileID: 0}
@@ -247,6 +265,7 @@ MeshRenderer:
   m_CastShadows: 2
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -307,6 +326,7 @@ MonoBehaviour:
   updateHealthPerSecond: 1
   contesting: []
   playerControlling: {fileID: 0}
+  distanceToStartFade: 30
   healthBar: {fileID: 0}
 --- !u!114 &5449785628990081364
 MonoBehaviour:
@@ -346,6 +366,7 @@ GameObject:
   - component: {fileID: 5311260760130868733}
   - component: {fileID: 9200478473933742994}
   - component: {fileID: 6933574278528048469}
+  - component: {fileID: 5861154905109815453}
   m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
@@ -363,6 +384,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1828845103152369613}
   m_Father: {fileID: 829340782384526448}
@@ -411,3 +433,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5861154905109815453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8200330787973664749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f84fbcb0b1ada2341b7a7c92397e1378, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceToStartFade: 5
+  minDistanceFade: 1
+  distance: 0

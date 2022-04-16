@@ -16,7 +16,7 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] float updateHealthPerSecond;
         [SerializeField] List<PlayerManager> contesting = new List<PlayerManager>();
         [SerializeField] PlayerManager playerControlling;
-
+        [SerializeField] float distanceToStartFade = 5;
 
         int health = 0;
 
@@ -62,10 +62,13 @@ namespace Com.BowenIvanov.BoatCombat
         // Update is called once per frame
         void Update()
         {
-            if(timer < 0)
+            if (PhotonNetwork.isMasterClient)
             {
-                updateHealth();
-                timer = updateHealthPerSecond;
+                if (timer < 0)
+                {
+                    updateHealth();
+                    timer = updateHealthPerSecond;
+                }
             }
 
             updateUI();
@@ -115,7 +118,14 @@ namespace Com.BowenIvanov.BoatCombat
             healthBar.value = health;
             Color color = healthBar.gameObject.GetComponent<SliderController>().setColors(teamControlling, (float)health / maxHealth);
             mat.color = new Color(color.r, color.g, color.b, mat.color.a);
-            img.color = color;
+
+            Vector3 plrPosition = PlayerManager.LocalPlayerInstance.transform.position;
+            float distance = (transform.position - plrPosition).magnitude;
+            float opacity = distance / (distanceToStartFade);
+            //img.color = color;
+            img.color = new Color(color.r, color.g, color.b, Mathf.Clamp(opacity, 0.0f, 1.0f));
+
+            
 
         }
 

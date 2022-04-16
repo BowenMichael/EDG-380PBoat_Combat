@@ -11,14 +11,17 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField]float _damage = 0;
         [SerializeField] Text Kills;
         [SerializeField] Text Damage;
+        [SerializeField] Text Speed;
 
         string killStr;
         string damageStr;
+        string speedStr;
 
         void Start()
         {
             killStr = Kills.text;
             damageStr = Damage.text;
+            speedStr = Speed.text;
         }
 
         private void Update()
@@ -30,6 +33,7 @@ namespace Com.BowenIvanov.BoatCombat
         {
             Kills.text = killStr + _kills;
             Damage.text = damageStr + _damage;
+            Speed.text = speedStr + (int)PlayerManager.LocalPlayerInstance.GetComponent<PlayerManager>().getCurrentSpeed();
         }
         public void onDamage(float damage)
         {

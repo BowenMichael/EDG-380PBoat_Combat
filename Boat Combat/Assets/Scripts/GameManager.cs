@@ -183,6 +183,7 @@ namespace Com.BowenIvanov.BoatCombat
             StartText.text = "GO!";
             Time.timeScale = 1;
             StartText.CrossFadeAlpha(0, 1, false);
+            StartText.transform.parent.gameObject.SetActive(false);//.CrossFadeAlpha(0, 1, false);
             if (PhotonNetwork.isMasterClient)
             {
                 StartCoroutine(matchTimer());

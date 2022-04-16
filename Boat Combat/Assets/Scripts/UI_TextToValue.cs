@@ -20,7 +20,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         public void setTextToValue(Slider slider)
         {
-            text.text = original + slider.value;
+            text.text =  slider.value.ToString();
         }
     }
 }

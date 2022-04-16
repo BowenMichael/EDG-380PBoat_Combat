@@ -68,14 +68,12 @@ namespace Com.BowenIvanov.BoatCombat
             reloadText = GameObject.Find("/Canvas/MainUI/Reload Text");
             //reloadText = temp.GetComponent<Canvas>();
 
-            mobileFireRT = FindObjectOfType<MobileManager>().getShoot();
+            //mobileFireRT = FindObjectOfType<MobileManager>().getShoot();
         }
 
         // Update is called once per frame
         void Update()
         {
-
-
             if (photonView.isMine)
             {
                 ProcessInput();
@@ -134,7 +132,7 @@ namespace Com.BowenIvanov.BoatCombat
 
             for (int i = 0; i < ts.Length; i++)
             {
-                if ((ts[i].position.x < mobileFireRT.position.x + mobileFireRT.rect.width * .5f && ts[i].position.y < mobileFireRT.position.y + mobileFireRT.rect.height * .5f))
+                if (mobileFireRT.rect.Contains(ts[i].position))
                 {
                     //Debug.Log("Fire area: " + ts[i].position);
                     if (ts[i].phase == TouchPhase.Began)

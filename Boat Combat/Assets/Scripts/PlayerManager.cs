@@ -138,7 +138,7 @@ namespace Com.BowenIvanov.BoatCombat
 #endif
 #if UNITY_ANDROID || UNITY_IOS
                 
-                mobileRT = FindObjectOfType<MobileManager>().getShoot();
+                //mobileRT = FindObjectOfType<MobileManager>().getShoot();
                 //mobileAxisRT = mobileAxis.transform.parent.GetComponentInParent<RectTransform>();
                 mobileManager = FindObjectOfType<MobileManager>();
                 throttleSlider = mobileManager.getThrottle();
@@ -289,15 +289,15 @@ namespace Com.BowenIvanov.BoatCombat
 #else
             //Setting up tilt axis
             Vector3 tilt = Input.acceleration;
-            tilt = Quaternion.Euler(90, 0, 0) * tilt;
+            tilt = Quaternion.Euler(0, 0, 0) * tilt;
 
             //Apply tilt to the horizontal axis
-            horizontal = Mathf.Clamp(Input.acceleration.x * (HortAccelSensitivity * MaxAccelSensitivity), -1, 1);
+            horizontal = Mathf.Clamp(tilt.x * (HortAccelSensitivity * MaxAccelSensitivity), -1, 1);
 
             //If using slider controls
             if (!isSliderControls)
             {            
-                vertical = Mathf.Clamp((Input.acceleration.y + .5f) * (VertAccelSensitivity * MaxAccelSensitivity), -1, 1);
+                vertical = Mathf.Clamp((tilt.y + .5f) * (VertAccelSensitivity * MaxAccelSensitivity), -1, 1);
                 Debug.DrawRay(transform.position + Vector3.up, transform.worldToLocalMatrix * -new Vector3(vertical, 0.0f, horizontal), Color.cyan);
 
             }
@@ -431,6 +431,11 @@ namespace Com.BowenIvanov.BoatCombat
         public void SpeedPowerUp()
         {
             StartCoroutine(BoostSpeed());
+        }
+
+        public float getCurrentSpeed()
+        {
+            return vertical * speed;
         }
 
         IEnumerator BoostSpeed()//speed doubled for 5 seconds

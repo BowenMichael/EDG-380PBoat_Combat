@@ -56,21 +56,23 @@ namespace Com.BowenIvanov.BoatCombat
                 if(other.TryGetComponent(out HealthManager health))
                 {
                     //other.gameObject.GetPhotonView().RPC("takeDamage", PhotonTargets.Others, damage);
-                    
-                    if (health.takeDamage(damage))
+                    if (health.getCurrentHealth() - damage <= 0)
                     {
-                        onKill.Invoke();
+                        onKill.Invoke(); //Defined in weapon manager
                     }
-                    onDamage.Invoke(damage);
+                    onDamage.Invoke(damage); //Defined in weapon manager
+                    health.gameObject.GetPhotonView().RPC("takeDamage", PhotonTargets.AllViaServer, damage);
 
                 }
             }
-            //Object.Destroy(gameObject);
-            if(photonView.isMine)
+            if (!other.CompareTag("CP"))
             {
-                if (photonView.isRuntimeInstantiated)
+                if (photonView.isMine)
                 {
-                    PhotonNetwork.Destroy(gameObject);
+                    if (photonView.isRuntimeInstantiated)
+                    {
+                        PhotonNetwork.Destroy(gameObject);
+                    }
                 }
             }
                 
