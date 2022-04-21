@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 
 namespace Com.BowenIvanov.BoatCombat
@@ -36,6 +37,14 @@ namespace Com.BowenIvanov.BoatCombat
 
         PlayerManager plm;
         RectTransform mobileFireRT;
+        private PlayerStatsTrackerManager pstm;
+
+        #endregion
+
+        #region Unity Events
+
+        public UnityEvent onDamage;
+        public UnityEvent onKill;
 
         #endregion
 
@@ -50,6 +59,7 @@ namespace Com.BowenIvanov.BoatCombat
         private void Start()
         {
             plm = GetComponent<PlayerManager>();
+            pstm = GetComponent<PlayerStatsTrackerManager>();
             mobileFireRT = plm.getFireRT();
 
             lastFired = Time.time;
@@ -58,14 +68,12 @@ namespace Com.BowenIvanov.BoatCombat
             reloadText = GameObject.Find("/Canvas/MainUI/Reload Text");
             //reloadText = temp.GetComponent<Canvas>();
 
-            mobileFireRT = FindObjectOfType<MobileManager>().getShoot();
+            //mobileFireRT = FindObjectOfType<MobileManager>().getShoot();
         }
 
         // Update is called once per frame
         void Update()
         {
-
-
             if (photonView.isMine)
             {
                 ProcessInput();
@@ -124,7 +132,7 @@ namespace Com.BowenIvanov.BoatCombat
 
             for (int i = 0; i < ts.Length; i++)
             {
-                if ((ts[i].position.x < mobileFireRT.position.x + mobileFireRT.rect.width * .5f && ts[i].position.y < mobileFireRT.position.y + mobileFireRT.rect.height * .5f))
+                if (mobileFireRT.rect.Contains(ts[i].position))
                 {
                     //Debug.Log("Fire area: " + ts[i].position);
                     if (ts[i].phase == TouchPhase.Began)
@@ -178,6 +186,11 @@ namespace Com.BowenIvanov.BoatCombat
                     if (PhotonNetwork.inRoom)
                     {
                         proj = PhotonNetwork.Instantiate(currentProjectile, boatPosition, boatRotation, 0);
+                        if(proj.TryGetComponent(out testProjectileScript tps))
+                        {
+                            tps.onDamage.AddListener(pstm.onDamage);
+                            tps.onKill.AddListener(pstm.onKill);
+                        }
                     }
 
                     if (proj == null)

@@ -23,7 +23,7 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.isMasterClient);
 
-                LoadArena();
+                //LoadArena();
             }
         }
 
@@ -35,7 +35,7 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.isMasterClient);
 
-                LoadArena();
+                //LoadArena();
             }
         }
 
@@ -67,18 +67,13 @@ namespace Com.BowenIvanov.BoatCombat
             
             if (PlayerPrefs.GetInt("isTwoPlayer") == 1)
             {
-                PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.room.PlayerCount);
+                PhotonNetwork.LoadLevel("Room1v1");
             }
             else if(PlayerPrefs.GetInt("isTwoPlayer") == 0)
             {
-                if (PhotonNetwork.room.PlayerCount <= 3)
-                {
-                    PhotonNetwork.LoadLevel("Room for 3");// + PhotonNetwork.room.PlayerCount);
-                }
-                else
-                {
-                    PhotonNetwork.LoadLevel("Room for 4");// + PhotonNetwork.room.PlayerCount);
-                }
+
+                PhotonNetwork.LoadLevel("RoomFFA");// + PhotonNetwork.room.PlayerCount);
+  
             }
             
 

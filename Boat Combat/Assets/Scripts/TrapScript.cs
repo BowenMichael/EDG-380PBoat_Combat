@@ -30,7 +30,7 @@ namespace Com.BowenIvanov.BoatCombat
             //}
             if (collision.gameObject.tag == "Player")
             {
-                collision.gameObject.GetComponent<PlayerManager>().takeDamage(25);
+                collision.gameObject.GetPhotonView().RPC("takeDamage", PhotonTargets.AllViaServer, 25);
                 PhotonNetwork.Destroy(gameObject);
 
                 if (photonView.isMine)

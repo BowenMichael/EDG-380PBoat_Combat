@@ -37,7 +37,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         bool isConnecting; //Keeps track of the process. Since connection is asynchronous and is based on several call backs from photon. we need to keep track of this to properly adjust the behavior when we recieve call back by photon. Typically this is used for onConnectedToMaster() callback
 
-        bool isTwoPlayer = true;
+        bool _isTwoPlayer = true;
 
         #endregion
 
@@ -75,13 +75,13 @@ namespace Com.BowenIvanov.BoatCombat
 
         public override void OnJoinedRoom()
         {
-            if (isTwoPlayer)
+            if (_isTwoPlayer)
             {
                 if (PhotonNetwork.room.PlayerCount == 1)
                 {
                     Debug.Log("We load the 'Room for 1'");
 
-                    PhotonNetwork.LoadLevel("Room for 1");
+                    PhotonNetwork.LoadLevel("Room1v1");
                 }
             }
             else
@@ -90,10 +90,10 @@ namespace Com.BowenIvanov.BoatCombat
                 {
                     Debug.Log("We load the 'Room for 3'");
 
-                    PhotonNetwork.LoadLevel("Room for 3");
+                    PhotonNetwork.LoadLevel("RoomFFA");
                 }
             }
-            Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+            //Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
             progressLabel.SetActive(false);
             connectedLabel.SetActive(true);
         }
@@ -133,7 +133,7 @@ namespace Com.BowenIvanov.BoatCombat
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
 
-            this.isTwoPlayer = isTwoPlayer;
+            this._isTwoPlayer = isTwoPlayer;
 
             if(isTwoPlayer)
                 PlayerPrefs.SetInt("isTwoPlayer", 1);
