@@ -84,6 +84,16 @@ namespace Com.BowenIvanov.BoatCombat
             ((GameObject)PhotonNetwork.masterClient.TagObject).GetPhotonView().RPC("EndState", PhotonTargets.All, winningTeam);
         }
 
+        public void win()
+        {
+            UI.win();
+        }
+
+        public void loss()
+        {
+            UI.lose();
+        }
+
         public void loadScene(int winner)
         {
             if (winner == PlayerManager.LocalPlayerInstance.GetComponent<PlayerManager>().getTeam())
@@ -219,7 +229,20 @@ namespace Com.BowenIvanov.BoatCombat
                 loadScene(cpm.getWinning());
             else
             {
-                UI.win();
+                PlayerStatsTrackerManager winner = plrs[0].GetComponent<PlayerStatsTrackerManager>();
+                for(int i = 1; i < plrs.Length; i++)
+                {
+                    PlayerStatsTrackerManager plstm = plrs[i].GetComponent<PlayerStatsTrackerManager>();
+                    if(plstm.getKills() > winner.getKills())
+                    {
+                        winner = plstm;
+                    }
+                    else if(plstm.getKills() == winner.getKills() && plstm.getDamage() > winner.getDamage())
+                    {
+                        winner = plstm;
+                    }
+                }
+                GetComponent<FreeForAllManager>().onElimLimitHit(PhotonNetwork.player.ID);
             }
         }
 

@@ -522,6 +522,23 @@ namespace Com.BowenIvanov.BoatCombat
               GameManager.self.loadScene(winningTeam);
         }
 
+        [PunRPC]
+        void WinState(int id)
+        {
+            if(PhotonNetwork.player.ID == id)
+            {
+                GameManager.self.win();
+            }
+            else
+            {
+                GameManager.self.loss(); 
+            }
+        }
+
+
+
+        
+
 #endregion
     }
 }

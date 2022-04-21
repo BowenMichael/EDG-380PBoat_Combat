@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Com.BowenIvanov.BoatCombat
@@ -12,6 +13,10 @@ namespace Com.BowenIvanov.BoatCombat
         [SerializeField] Text Kills;
         [SerializeField] Text Damage;
         [SerializeField] Text Speed;
+        [SerializeField] UnityEvent<int> onKillLimit = new UnityEvent<int>();
+        private int elimLimit;
+        private FreeForAllManager FFAM;
+
 
         string killStr;
         string damageStr;
@@ -22,6 +27,10 @@ namespace Com.BowenIvanov.BoatCombat
             killStr = Kills.text;
             damageStr = Damage.text;
             speedStr = Speed.text;
+            FFAM = GameManager.self.GetComponent<FreeForAllManager>();
+            elimLimit = FFAM.getElimLimit();
+            onKillLimit.AddListener(FFAM.onElimLimitHit);
+
         }
 
         private void Update()
@@ -31,9 +40,14 @@ namespace Com.BowenIvanov.BoatCombat
 
         void updateText()
         {
-            Kills.text = killStr + _kills;
-            Damage.text = damageStr + _damage;
-            Speed.text = speedStr + (int)PlayerManager.LocalPlayerInstance.GetComponent<PlayerManager>().getCurrentSpeed();
+            if(Kills != null)
+                Kills.text = killStr + _kills;
+
+            if (Damage != null)
+                Damage.text = damageStr + _damage;
+
+            if (Speed != null)
+                Speed.text = speedStr + (int)PlayerManager.LocalPlayerInstance.GetComponent<PlayerManager>().getCurrentSpeed();
         }
         public void onDamage(float damage)
         {
@@ -43,6 +57,20 @@ namespace Com.BowenIvanov.BoatCombat
         public void onKill()
         {
             _kills++;
+            if(_kills >= elimLimit)
+            {
+                onKillLimit.Invoke(PhotonNetwork.player.ID);
+            }
+        }
+
+        public int getKills()
+        {
+            return _kills;
+        }
+
+        public float getDamage()
+        {
+            return _damage;
         }
     }
 }
