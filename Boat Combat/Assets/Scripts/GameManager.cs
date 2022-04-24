@@ -134,6 +134,25 @@ namespace Com.BowenIvanov.BoatCombat
             return isFFA;
         }
 
+        public bool getIsStarted()
+        {
+            return isStarted;
+        }
+
+        public PlayerStatsTrackerManager getKillLeader()
+        {
+            PlayerStatsTrackerManager leader = plrs[0].GetComponent<PlayerStatsTrackerManager>();
+            for(int i = 1; i < plrs.Length; i++)
+            {
+                PlayerStatsTrackerManager challenger = plrs[i].GetComponent<PlayerStatsTrackerManager>();
+                if (challenger.getKills() > leader.getKills())
+                {
+                    leader = challenger;
+                }
+            }
+            return leader;
+        }
+
         #endregion
 
         #region Custom

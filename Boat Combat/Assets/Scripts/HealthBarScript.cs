@@ -7,7 +7,7 @@ namespace Com.BowenIvanov.BoatCombat
 {
     public class HealthBarScript : MonoBehaviour
     {
-        private GameObject player;
+        public GameObject player;
         public Vector3 offset;
         public float startScale;
         public float MaxDistance;
@@ -23,6 +23,7 @@ namespace Com.BowenIvanov.BoatCombat
         {
             sizeDelta = transform.GetComponent<RectTransform>().sizeDelta * startScale;
             fill = GetComponent<Slider>();
+            setPlayer(player);
         }
         private void Update()
         {
