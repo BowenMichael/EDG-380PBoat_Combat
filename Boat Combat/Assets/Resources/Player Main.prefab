@@ -216,7 +216,7 @@ MonoBehaviour:
   cameraPrefab: {fileID: 1553192701770496705, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
   testProjectile: {fileID: 6975210507314041288, guid: eeb44b604e36d564eb87ddf8b93ed9ce, type: 3}
   cvCam: {fileID: 0}
-  speed: 500
+  speed: 1500
   rotSpeed: 100
   sensitivity: 2
   team: 0
@@ -252,7 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentProjectile: testProjectile
   projSpeed: 0
-  speed: 500
+  speed: 1500
   numProjectiles: 1
   fireRate: 10
   maxAmmo: 15

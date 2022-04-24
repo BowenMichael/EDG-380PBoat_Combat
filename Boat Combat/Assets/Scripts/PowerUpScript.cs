@@ -38,7 +38,7 @@ namespace Com.BowenIvanov.BoatCombat
                 part.Play();
                 //Destroy(gameObject, part.main.duration);
 
-                PhotonNetwork.Destroy(gameObject);
+                //PhotonNetwork.Destroy(gameObject);
 
                 //return;
 

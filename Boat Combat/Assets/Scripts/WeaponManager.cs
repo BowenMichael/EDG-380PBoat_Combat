@@ -202,7 +202,8 @@ namespace Com.BowenIvanov.BoatCombat
 
                 //Vector3 projectileDirection = new Vector3(-cameraDirection.x, 0f, -cameraDirection.z).normalized;
                 Vector3 projectileDirection = new Vector3 (proj.transform.forward.x, 0f, proj.transform.forward.z);
-                proj.transform.rotation = new Quaternion(boatRotation.x + 90f, boatRotation.y -90f, boatRotation.z, boatRotation.w);
+                //proj.transform.rotation = new Quaternion(boatRotation.x + 90f, boatRotation.y -90f, boatRotation.z, boatRotation.w);
+                proj.transform.Rotate(boatRotation.x + 90f, boatRotation.y, boatRotation.z);
                 proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed + 1000) * Time.fixedDeltaTime);
             }
         }
@@ -215,15 +216,27 @@ namespace Com.BowenIvanov.BoatCombat
             //reload text shows player they are reloading
             reloadText.SetActive(true);
 
+            float t = 0f;
+            while (t <= 1.5)
+            {
+                t += Time.deltaTime;
+                reloadText.GetComponent<Slider>().handleRect.sizeDelta = new Vector2(t * 175, 0);
+                yield return null;
+
+            }
+
+
             //this needs to be tested
-            yield return new WaitForSeconds(1.5f);
+            //yield return new WaitForSeconds(1.5f);
             currentAmmo = maxAmmo;
 
             reloadText.SetActive(false);
             isReloading = false;
+            yield return null;
+
         }
 
-        
+
 
         #endregion
 
