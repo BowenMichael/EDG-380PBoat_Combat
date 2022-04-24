@@ -417,6 +417,10 @@ namespace Com.BowenIvanov.BoatCombat
 
         public void respawn()
         {
+            if (GameManager.self.getIsFFA())
+            {
+                setSpawnPoint();
+            }
             Debug.Log("Respawning " + photonView.owner);
             photonView.RPC("sendSpawnPoint", PhotonTargets.All, new float[] { spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z },
                                                                 new float[] { spawnPoint.rotation.eulerAngles.x, spawnPoint.rotation.eulerAngles.y, spawnPoint.rotation.eulerAngles.z });

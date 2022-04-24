@@ -129,6 +129,11 @@ namespace Com.BowenIvanov.BoatCombat
             return plrs;
         }
 
+        public bool getIsFFA()
+        {
+            return isFFA;
+        }
+
         #endregion
 
         #region Custom

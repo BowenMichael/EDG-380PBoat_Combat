@@ -83,8 +83,7 @@ namespace Com.BowenIvanov.BoatCombat
         /// </summary>
         public void instantiatePlayer()
         {
-            Vector3 spawnPosition = Vector3.zero;
-            Quaternion spawnRotation = Quaternion.identity;
+           
 
             if (playerPrefab == null)
             {
@@ -94,17 +93,24 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 if (PlayerManager.LocalPlayerInstance == null)
                 {
-                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
-                    // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                    GameObject tmp = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition, spawnRotation, 0);
-
-                    
+                    SpawnPlayer();
                 }
                 else
                 {
                     Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
                 }
             }
+        }
+
+        [ContextMenu("Spawn extra player")]
+        void SpawnPlayer()
+        {
+            Vector3 spawnPosition = Vector3.zero;
+            Quaternion spawnRotation = Quaternion.identity;
+            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
+            // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+            GameObject tmp = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition, spawnRotation, 0);
+
         }
 
         /// <summary>
