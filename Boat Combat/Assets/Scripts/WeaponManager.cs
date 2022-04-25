@@ -232,15 +232,27 @@ namespace Com.BowenIvanov.BoatCombat
             //reload text shows player they are reloading
             reloadText.SetActive(true);
 
+            float t = 0f;
+            while (t <= 1.5)
+            {
+                t += Time.deltaTime;
+                reloadText.GetComponent<Slider>().handleRect.sizeDelta = new Vector2(t * 175, 0);
+                yield return null;
+
+            }
+
+
             //this needs to be tested
-            yield return new WaitForSeconds(1.5f);
+            //yield return new WaitForSeconds(1.5f);
             currentAmmo = maxAmmo;
 
             reloadText.SetActive(false);
             isReloading = false;
+            yield return null;
+
         }
 
-        
+
 
         #endregion
 

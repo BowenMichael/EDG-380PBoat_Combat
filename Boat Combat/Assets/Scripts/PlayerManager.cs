@@ -467,7 +467,7 @@ namespace Com.BowenIvanov.BoatCombat
                 t += Time.deltaTime / 100f;
                 vignette.intensity.value = Mathf.Lerp(0.3f, 0.0f, Mathf.SmoothStep(0f, 1f, t));
 
-                //yield return null;
+                yield return null;
             }
 
 
