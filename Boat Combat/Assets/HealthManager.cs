@@ -18,17 +18,7 @@ namespace Com.BowenIvanov.BoatCombat
         public UnityEvent onDeath;
         public UnityEvent<float> onDamaged;
 
-        //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        //{
-        //    if (stream.isWriting)
-        //    {
-        //        stream.SendNext(currentHealth);
-        //    }
-        //    else
-        //    {
-        //        currentHealth = (float)stream.ReceiveNext();
-        //    }
-        //}
+
 
         // Start is called before the first frame update
         void Start()
@@ -81,6 +71,30 @@ namespace Com.BowenIvanov.BoatCombat
             onDamaged.Invoke(value);
             currentHealth -= value;
             return checkHealth();
+        }
+
+        [PunRPC]
+        public void damageHeathWithPlayerInfo(float value, int senderID)
+        {
+            PhotonView sender = null;
+            foreach(PlayerManager plr in GameManager.self.getPlayers())
+            {
+                if(plr.gameObject.GetPhotonView().viewID == senderID)
+                {
+                    sender = plr.gameObject.GetPhotonView();
+                    break;
+                }
+            }
+
+            if (sender == null) return;
+
+            PlayerStatsTrackerManager pstm = sender.gameObject.GetComponent<PlayerStatsTrackerManager>();
+            if (takeDamage(value))
+            {
+                pstm.onKill();
+            }
+            pstm.onDamage(value);
+             
         }
 
         public float getCurrentHealth()

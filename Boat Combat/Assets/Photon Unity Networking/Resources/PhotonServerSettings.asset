@@ -54,4 +54,6 @@ MonoBehaviour:
   - onWin
   - takeDamage
   - WinState
+  - damage
+  - damageHeathWithPlayerInfo
   DisableAutoOpenWizard: 1

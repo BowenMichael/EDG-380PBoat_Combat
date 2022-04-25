@@ -32,17 +32,25 @@ namespace Com.BowenIvanov.BoatCombat
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
-            if (info.sender.IsMasterClient)
+            if (PhotonNetwork.isMasterClient)
             {
                 if (stream.isWriting)
                 {
-                    stream.SendNext(teamContesting);
+                    //Send Master Client health
+                    stream.SendNext(health);
                     stream.SendNext(teamControlling);
                 }
-                else
+            }
+            else
+            {
+                if (info.sender.IsMasterClient)
                 {
-                    this.teamContesting = (int)stream.ReceiveNext();
-                    this.teamControlling = (int)stream.ReceiveNext();
+                    if (!stream.isWriting)
+                    {
+                        //recive data from master client
+                        this.health = (int)stream.ReceiveNext();
+                        this.teamControlling = (int)stream.ReceiveNext();
+                    }
                 }
             }
         }
@@ -69,11 +77,12 @@ namespace Com.BowenIvanov.BoatCombat
                     updateHealth();
                     timer = updateHealthPerSecond;
                 }
+                timer -= Time.deltaTime;
             }
 
             updateUI();
 
-            timer -= Time.deltaTime;
+            
         }
 
         public int getWinning()

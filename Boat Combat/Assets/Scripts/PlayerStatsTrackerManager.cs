@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Com.BowenIvanov.BoatCombat
 {
-    public class PlayerStatsTrackerManager: MonoBehaviour
+    public class PlayerStatsTrackerManager: MonoBehaviour, IPunObservable
     {
         [SerializeField]int _kills = 0;
         [SerializeField]float _damage = 0;
@@ -28,8 +28,11 @@ namespace Com.BowenIvanov.BoatCombat
             damageStr = Damage.text;
             speedStr = Speed.text;
             FFAM = GameManager.self.GetComponent<FreeForAllManager>();
-            elimLimit = FFAM.getElimLimit();
-            onKillLimit.AddListener(FFAM.onElimLimitHit);
+            if (FFAM != null)
+            {
+                elimLimit = FFAM.getElimLimit();
+                onKillLimit.AddListener(FFAM.onElimLimitHit);
+            }
 
         }
 
@@ -71,6 +74,26 @@ namespace Com.BowenIvanov.BoatCombat
         public float getDamage()
         {
             return _damage;
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (gameObject.GetPhotonView().isMine) 
+            {
+                if (stream.isWriting)
+                {
+                    stream.SendNext(_kills);
+                    stream.SendNext(_damage);
+                }
+            }
+            else
+            {
+                if (stream.isReading)
+                {
+                    _kills = (int)stream.ReceiveNext();
+                    _damage = (int)stream.ReceiveNext();
+                }
+            }
         }
     }
 }

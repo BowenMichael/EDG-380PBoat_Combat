@@ -705,6 +705,14 @@ PrefabInstance:
       propertyPath: instantiationId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 364112150620388732, guid: a99198837972f1e48a382d7ad6a5ecd1, type: 3}
+      propertyPath: synchronization
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 364112150620388732, guid: a99198837972f1e48a382d7ad6a5ecd1, type: 3}
+      propertyPath: ObservedComponents.Array.data[0]
+      value: 
+      objectReference: {fileID: 849478943}
     - target: {fileID: 364112150620388735, guid: a99198837972f1e48a382d7ad6a5ecd1, type: 3}
       propertyPath: UI
       value: 
@@ -739,6 +747,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a99198837972f1e48a382d7ad6a5ecd1, type: 3}
+--- !u!114 &849478942 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5946036706350658473, guid: a99198837972f1e48a382d7ad6a5ecd1, type: 3}
+  m_PrefabInstance: {fileID: 849478941}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbef0be167bbe4889dffa3d434adad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &849478943 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4959810049543072598, guid: a99198837972f1e48a382d7ad6a5ecd1, type: 3}
+  m_PrefabInstance: {fileID: 849478941}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d28e0df89b110849b445e1f9ef3953c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1005731352
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -749,6 +779,10 @@ PrefabInstance:
     - target: {fileID: 1553192701770496705, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
       propertyPath: m_Name
       value: CM vcam1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553192701770496718, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
+      propertyPath: m_Lens.m_SensorSize.x
+      value: 2.76875
       objectReference: {fileID: 0}
     - target: {fileID: 1553192701770496719, guid: fd64a101c1212594ba39343c69ba65f8, type: 3}
       propertyPath: m_RootOrder
@@ -1349,6 +1383,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3312634199200932854, guid: 870268277da2f9d4e8ffdae780d2b6d2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4735763440492372857, guid: 870268277da2f9d4e8ffdae780d2b6d2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6076468949910305073, guid: 870268277da2f9d4e8ffdae780d2b6d2, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1440,6 +1482,26 @@ PrefabInstance:
     - target: {fileID: 7894575547921893516, guid: 870268277da2f9d4e8ffdae780d2b6d2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7894575549089095201, guid: 870268277da2f9d4e8ffdae780d2b6d2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7894575549089095201, guid: 870268277da2f9d4e8ffdae780d2b6d2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 849478942}
+    - target: {fileID: 7894575549089095201, guid: 870268277da2f9d4e8ffdae780d2b6d2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: loadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 7894575549089095201, guid: 870268277da2f9d4e8ffdae780d2b6d2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Com.BowenIvanov.BoatCombat.SceneNavigator, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7894575549089095201, guid: 870268277da2f9d4e8ffdae780d2b6d2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Main Menu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 870268277da2f9d4e8ffdae780d2b6d2, type: 3}

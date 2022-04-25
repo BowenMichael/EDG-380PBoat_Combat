@@ -65,7 +65,7 @@ namespace Com.BowenIvanov.BoatCombat
             lastFired = Time.time;
             currentAmmo = maxAmmo;
 
-            reloadText = GameObject.Find("/Canvas/MainUI/Reload Text");
+            //reloadText = GameObject.Find("/Canvas/MainUI/Reload Text");
             //reloadText = temp.GetComponent<Canvas>();
 
             //mobileFireRT = FindObjectOfType<MobileManager>().getShoot();
@@ -188,8 +188,9 @@ namespace Com.BowenIvanov.BoatCombat
                         proj = PhotonNetwork.Instantiate(currentProjectile, boatPosition, boatRotation, 0);
                         if(proj.TryGetComponent(out testProjectileScript tps))
                         {
-                            tps.onDamage.AddListener(pstm.onDamage);
-                            tps.onKill.AddListener(pstm.onKill);
+                            tps.sender = gameObject.GetPhotonView();
+                            //tps.onDamage.AddListener(pstm.onDamage);
+                            //tps.onKill.AddListener(pstm.onKill);
                         }
                     }
 

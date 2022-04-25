@@ -26,6 +26,9 @@ namespace Com.BowenIvanov.BoatCombat
         [Tooltip("The UI Label to inform the user that they are connected")]
         [SerializeField]
         private GameObject connectedLabel;
+        [Tooltip("The UI Label to inform the user that they failed to connect")]
+        [SerializeField]
+        private GameObject failed;
 
 
 
@@ -140,9 +143,11 @@ namespace Com.BowenIvanov.BoatCombat
             else
                 PlayerPrefs.SetInt("isTwoPlayer", 0);
 
+
             if (PhotonNetwork.connected)
             {
-                PhotonNetwork.JoinRandomRoom();
+                isConnecting = true;
+                PhotonNetwork.JoinLobby();
             }
             else
             {
@@ -152,6 +157,14 @@ namespace Com.BowenIvanov.BoatCombat
         }
 
         #endregion
+
+        IEnumerator onFailedToConnect()
+        {
+            progressLabel.SetActive(false);
+            failed.SetActive(true);
+            yield return new WaitForSecondsRealtime(3.0f);
+            FindObjectOfType<SceneNavigator>().loadScene("Main Menu");
+        }
     }
 }
 

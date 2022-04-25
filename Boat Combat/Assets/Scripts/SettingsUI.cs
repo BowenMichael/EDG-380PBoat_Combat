@@ -51,8 +51,7 @@ namespace Com.BowenIvanov.BoatCombat
 
         IEnumerator endState()
         {
-            
-            Time.timeScale = 0;
+            Time.timeScale = .2f;
 
             yield return new WaitForSecondsRealtime(5f);
             GameManager.self.leaveRoom();

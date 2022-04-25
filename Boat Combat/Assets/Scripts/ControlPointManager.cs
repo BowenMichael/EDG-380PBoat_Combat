@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Com.BowenIvanov.BoatCombat
 {
-    public class ControlPointManager : MonoBehaviour
+    public class ControlPointManager : MonoBehaviour, IPunObservable
     {
         [Tooltip("0: Neutral")]
         [SerializeField] int teamControlling = 0;
@@ -23,19 +23,28 @@ namespace Com.BowenIvanov.BoatCombat
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
-            if (info.sender.IsMasterClient)
+            if (PhotonNetwork.isMasterClient)
             {
                 if (stream.isWriting)
                 {
-                    stream.SendNext(teamContesting);
+                    //Send Master Client health
+                    stream.SendNext(health);
                     stream.SendNext(teamControlling);
                 }
-                else
+            }
+            else
+            {
+                if (info.sender.IsMasterClient)
                 {
-                    this.teamContesting = (int)stream.ReceiveNext();
-                    this.teamControlling = (int)stream.ReceiveNext();
+                    if (!stream.isWriting)
+                    {
+                        //recive data from master client
+                        this.health = (int)stream.ReceiveNext();
+                        this.teamControlling = (int)stream.ReceiveNext();
+                    }
                 }
             }
+
         }
 
         // Start is called before the first frame update
@@ -49,15 +58,19 @@ namespace Com.BowenIvanov.BoatCombat
         // Update is called once per frame
         void Update()
         {
-            if (timer < 0)
+            if (PhotonNetwork.isMasterClient)
             {
-                updateHealth();
-                timer = updateHealthPerSecond;
+                if (timer < 0)
+                {
+                    updateHealth();
+                    timer = updateHealthPerSecond;
+                }
+                timer -= Time.deltaTime;
             }
 
             updateUI();
 
-            timer -= Time.deltaTime;
+           
         }
 
         public int getWinning()

@@ -11,7 +11,7 @@ namespace Com.BowenIvanov.BoatCombat
     {
         #region Public Variables
 
-
+        public PhotonView sender;
 
         #endregion
 
@@ -55,14 +55,10 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 if(other.TryGetComponent(out HealthManager health))
                 {
-                    //other.gameObject.GetPhotonView().RPC("takeDamage", PhotonTargets.Others, damage);
-                    if (health.getCurrentHealth() - damage <= 0)
+                    if (photonView.isMine)
                     {
-                        onKill.Invoke(); //Defined in weapon manager
+                        health.gameObject.GetPhotonView().RPC("damageHeathWithPlayerInfo", PhotonTargets.AllViaServer, damage, sender.viewID);
                     }
-                    onDamage.Invoke(damage); //Defined in weapon manager
-                    health.gameObject.GetPhotonView().RPC("takeDamage", PhotonTargets.AllViaServer, damage);
-
                 }
             }
             if (!other.CompareTag("CP"))

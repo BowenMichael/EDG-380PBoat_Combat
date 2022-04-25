@@ -16,6 +16,7 @@ namespace Com.BowenIvanov.BoatCombat
         #region Public Variables
 
         public string launcherScene;
+        private string mainMenu = "Main Menu";
 
 
         #endregion
@@ -28,7 +29,8 @@ namespace Com.BowenIvanov.BoatCombat
         /// <param name="scene"></param>
         public void loadScene(string scene)
         {
-            SceneManager.LoadScene(scene); // don't need to check if it is in build order because unity has a proper debug message for this problem
+            SceneManager.LoadScene(scene);
+             // don't need to check if it is in build order because unity has a proper debug message for this problem
         }
 
         #endregion
@@ -40,8 +42,8 @@ namespace Com.BowenIvanov.BoatCombat
         /// </summary>
         public override void OnLeftRoom()
         {
-            if (!string.IsNullOrEmpty(launcherScene))
-                SceneManager.LoadScene(launcherScene);
+            if (!string.IsNullOrEmpty(mainMenu))
+                SceneManager.LoadScene(mainMenu);
             else
                 SceneManager.LoadScene(0);
         }
