@@ -24,6 +24,9 @@ namespace Com.BowenIvanov.BoatCombat
         public GameObject reloadText;
         public GameObject weaponBarrel;
 
+        public AudioClip projFiredSound;
+
+
         #endregion
 
         #region Private Variables
@@ -173,6 +176,10 @@ namespace Com.BowenIvanov.BoatCombat
             if (Time.time - lastFired > 1 / fireRate) //check fire rate
             {
                 lastFired = Time.time;
+                //play fired projectile sound
+                AudioSource audio = GetComponent<AudioSource>();
+                audio.clip = projFiredSound;
+                audio.Play();
 
                 Vector3 boatPosition = gameObject.transform.position;
                 Quaternion boatRotation = gameObject.transform.rotation;

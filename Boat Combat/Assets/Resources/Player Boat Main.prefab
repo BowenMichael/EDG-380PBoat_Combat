@@ -654,6 +654,7 @@ MonoBehaviour:
   testProjectile: {fileID: 6975210507314041288, guid: eeb44b604e36d564eb87ddf8b93ed9ce, type: 3}
   reloadText: {fileID: 9156425932338783528}
   weaponBarrel: {fileID: 8268173199179274881}
+  projFiredSound: {fileID: 8300000, guid: 5ff823f546b52574a931e1d9b44290a6, type: 3}
   onDamage:
     m_PersistentCalls:
       m_Calls: []

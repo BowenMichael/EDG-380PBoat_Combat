@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44735074, g: 0.49672598, b: 0.5729015, a: 1}
+  m_IndirectSpecularColor: {r: 0.44997174, g: 0.5000289, b: 0.57553226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -725,6 +725,10 @@ PrefabInstance:
       propertyPath: timerText
       value: 
       objectReference: {fileID: 408467703}
+    - target: {fileID: 364112150891065820, guid: a99198837972f1e48a382d7ad6a5ecd1, type: 3}
+      propertyPath: offlineMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4959810049543072598, guid: a99198837972f1e48a382d7ad6a5ecd1, type: 3}
       propertyPath: healthBar
       value: 
