@@ -30,13 +30,16 @@ MonoBehaviour:
   RpcList:
   - Chat
   - ChatMessage
+  - damageHeathWithPlayerInfo
   - DestroyRpc
   - endGameByMatchTime
   - EndState
   - init
+  - initLocalPlayer
   - InstantiateRpc
-  - onDeath
+  - onWin
   - PickupItemInit
+  - processDeath
   - PunPickup
   - PunPickupSimple
   - PunRespawn
@@ -46,14 +49,9 @@ MonoBehaviour:
   - sendTeam
   - sendTimer
   - setPosition
-  - sendTimer
-  - endGameByMatchTime
-  - initLocalPlayer
   - start
-  - processDeath
-  - onWin
   - takeDamage
   - WinState
-  - damage
-  - damageHeathWithPlayerInfo
+  - sendTimer
+  - endGameByMatchTime
   DisableAutoOpenWizard: 1

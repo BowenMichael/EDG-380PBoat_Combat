@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1117244123021370588, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: speed
-      value: 2000
+      value: 750
       objectReference: {fileID: 0}
     - target: {fileID: 1117244123021370588, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: rotSpeed
@@ -81,15 +81,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5268632159674632707, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: speed
-      value: 350
+      value: 750
       objectReference: {fileID: 0}
     - target: {fileID: 5268632159674632707, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: maxAmmo
-      value: 35
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5268632159674632707, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: fireRate
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5268632159674632707, guid: 06e131abf4360df41aba0be2cae52a27, type: 3}
       propertyPath: testProjectile

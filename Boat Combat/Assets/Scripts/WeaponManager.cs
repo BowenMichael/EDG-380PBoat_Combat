@@ -24,6 +24,9 @@ namespace Com.BowenIvanov.BoatCombat
         public GameObject reloadText;
         public GameObject weaponBarrel;
 
+        public AudioClip projFiredSound;
+
+
         #endregion
 
         #region Private Variables
@@ -173,6 +176,10 @@ namespace Com.BowenIvanov.BoatCombat
             if (Time.time - lastFired > 1 / fireRate) //check fire rate
             {
                 lastFired = Time.time;
+                //play fired projectile sound
+                AudioSource audio = GetComponent<AudioSource>();
+                audio.clip = projFiredSound;
+                audio.Play();
 
                 Vector3 boatPosition = gameObject.transform.position;
                 Quaternion boatRotation = gameObject.transform.rotation;
@@ -201,8 +208,8 @@ namespace Com.BowenIvanov.BoatCombat
                     Vector3 cameraDirection = (Camera.main.transform.position - gameObject.transform.position).normalized;
                     proj.transform.position = weaponBarrel.transform.position;//new Vector3(boatPosition.x , boatPosition.y, boatPosition.z);
 
-                    proj.transform.forward = weaponBarrel.transform.right;// new Vector3(-cameraDirection.x, 0f, -cameraDirection.z);
-
+                    proj.transform.forward = gameObject.transform.right;// new Vector3(-cameraDirection.x, 0f, -cameraDirection.z);
+                    //proj.transform.GetChild(0).transform.forward = weaponBarrel.transform.right;
                     //proj.transform.position += (proj.transform.forward * 10);
 
 
@@ -211,7 +218,7 @@ namespace Com.BowenIvanov.BoatCombat
 
                     //Vector3 projectileDirection = new Vector3(-cameraDirection.x, 0f, -cameraDirection.z).normalized;
                     Vector3 projectileDirection = new Vector3(proj.transform.forward.x, 0f, proj.transform.forward.z);
-                    proj.transform.rotation = new Quaternion(boatRotation.x + 90f, boatRotation.y - 90f, boatRotation.z, boatRotation.w);
+                    proj.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
                     proj.gameObject.GetComponent<Rigidbody>().AddForce(projectileDirection * (projSpeed + speed + 1000) * Time.fixedDeltaTime);
                 }
 

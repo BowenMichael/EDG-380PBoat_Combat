@@ -34,6 +34,9 @@ namespace Com.BowenIvanov.BoatCombat
             {
                 //change speed
                 collision.gameObject.GetComponent<PlayerManager>().SpeedPowerUp();
+
+
+                Instantiate(part, transform.position, transform.rotation);
                 part.transform.position = transform.position;
                 part.Play();
                 //Destroy(gameObject, part.main.duration);

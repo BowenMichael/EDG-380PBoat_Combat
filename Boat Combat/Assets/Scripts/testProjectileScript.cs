@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Audio;
 using Cinemachine;
 
 
@@ -12,6 +13,9 @@ namespace Com.BowenIvanov.BoatCombat
         #region Public Variables
 
         public PhotonView sender;
+
+        //public AudioSource projFiredSound;
+        public AudioClip projImpactSound;
 
         #endregion
 
@@ -58,6 +62,10 @@ namespace Com.BowenIvanov.BoatCombat
                     if (photonView.isMine)
                     {
                         health.gameObject.GetPhotonView().RPC("damageHeathWithPlayerInfo", PhotonTargets.AllViaServer, damage, sender.viewID);
+                        //play impact sound
+                        AudioSource audio = GetComponent<AudioSource>();
+                        audio.clip = projImpactSound;
+                        audio.Play();
                     }
                 }
             }

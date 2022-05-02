@@ -114,7 +114,7 @@ namespace Com.BowenIvanov.BoatCombat
 
             if (PhotonNetwork.isMasterClient)
             {
-                photonView.RPC("init", PhotonTargets.AllBuffered);
+                photonView.RPC("init", PhotonTargets.All);
             }
 
             //set up Camera
@@ -412,7 +412,7 @@ namespace Com.BowenIvanov.BoatCombat
         {
             Debug.Log("Setting spawn " + photonView.owner);
             spawnPoint = PlayerSpawnManager.self.getSpawnPoint();
-            respawn();
+            //respawn();
         }
 
         public void respawn()
@@ -485,11 +485,14 @@ namespace Com.BowenIvanov.BoatCombat
         [PunRPC]
         void init()
         {
-            //Set Team
-            setTeamByPlayerManager();
-
+            if (!GameManager.self.getIsFFA())
+            {
+                //Set Team
+                setTeamByPlayerManager();
+            }
             //SetSpawnPoint
             setSpawnPoint();
+            respawn();
 
 
         }
