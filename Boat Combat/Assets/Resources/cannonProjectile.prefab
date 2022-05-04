@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8661431230743048929, guid: eeb44b604e36d564eb87ddf8b93ed9ce, type: 3}
+      propertyPath: damage
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: -7930524527183839650, guid: eeb44b604e36d564eb87ddf8b93ed9ce, type: 3}
       propertyPath: m_ScaleModel.SynchronizeEnabled
       value: 1
